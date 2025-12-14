@@ -39,6 +39,7 @@
             imports = [
               # Import the module from illogical-flake
 	      # illogical-flake.homeManagerModules.default
+	      ./home/home.nix
 	    ];
 
 	    # programs.illogical-impulse.enable = true;
