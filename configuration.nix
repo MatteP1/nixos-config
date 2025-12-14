@@ -9,6 +9,7 @@
     [ # Include the results of the hardware scan.
       ./hardware-configuration.nix
       # ./sddm.nix
+      ./fcitx5.nix
     ];
 
   # Bootloader.
@@ -43,14 +44,6 @@
     LC_TIME = "da_DK.UTF-8";
   };
 
-  i18n.inputMethod = {
-	  type = "fcitx5";
-	  enable = true;
-	  fcitx5.waylandFrontend = true;
-	  fcitx5.addons = with pkgs; [
-		fcitx5-mozc
-	  ];
-  };
 
   # Enable the X11 windowing system.
   services.xserver.enable = true;
