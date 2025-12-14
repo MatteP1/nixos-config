@@ -10,7 +10,7 @@
     };
   };
 
-  outputs = { nixpkgs, home-manager, ... }: {
+  outputs = { nixpkgs, home-manager, ... }:
 	  let
 		  mkHost = hostname: nixpkgs.lib.nixosSystem {
 			  system = "x86_64-linux";
@@ -34,6 +34,5 @@
 			  desktop = mkHost "desktop";
 			  au-thinkpad = mkHost "au-thinkpad";
 		  };
-	  }
-  };
+	  };
 }
