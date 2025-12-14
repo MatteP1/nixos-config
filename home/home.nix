@@ -3,7 +3,7 @@
 {
   home.username = "matte";
   home.homeDirectory = "/home/matte";
-  home.stateVersion = "25.11";
+  home.stateVersion = "25.05";
   programs.home-manager.enable = true;
 
   imports = [

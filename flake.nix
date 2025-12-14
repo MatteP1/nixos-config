@@ -8,45 +8,32 @@
       url = "github:nix-community/home-manager";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-
-    dotfiles = {
-      url = "git+https://github.com/MatteP1/dots-hyprland.git?submodules=1";
-      flake = false;
-    };
-
-    illogical-flake = {
-      url = "github:soymou/illogical-flake";
-      inputs.nixpkgs.follows = "nixpkgs";
-      inputs.dotfiles.follows = "dotfiles";  # Override to use your dotfiles
-    };
   };
 
-  outputs = { nixpkgs, home-manager, illogical-flake, ... }: {
+  outputs = { nixpkgs, home-manager, ... }: {
+	  let
+		  mkHost = hostname: nixpkgs.lib.nixosSystem {
+			  system = "x86_64-linux";
 
-    nixosConfigurations.matte = nixpkgs.lib.nixosSystem {
-      system = "x86_64-linux";
-      modules = [
-        ./configuration.nix
+			  modules = [
+				  ./hosts/${hostname}/configuration.nix
 
-	home-manager.nixosModules.home-manager
-	{
-	  home-manager.useGlobalPkgs = true;
-	  home-manager.useUserPackages = true;
-	  home-manager.backupFileExtension = "backup";
+					  home-manager.nixosModules.home-manager
+					  {
+						  home-manager.useGlobalPkgs = true;
+						  home-manager.useUserPackages = true;
+						  home-manager.backupFileExtension = "backup";
 
-	  home-manager.users.matte = {
-	    home.stateVersion = "25.05";
-            imports = [
-              # Import the module from illogical-flake
-	      # illogical-flake.homeManagerModules.default
-	      ./home/home.nix
-	    ];
-
-	    # programs.illogical-impulse.enable = true;
-
-	  };
-	}
-      ];
-    };
+						  home-manager.users.matte =
+							  import ./home/home.nix;
+					  }
+			  ];
+		  };
+	  in {
+		  nixosConfigurations = {
+			  desktop = mkHost "desktop";
+			  au-thinkpad = mkHost "au-thinkpad";
+		  };
+	  }
   };
 }

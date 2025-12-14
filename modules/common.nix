@@ -6,10 +6,8 @@
 
 {
   imports =
-    [ # Include the results of the hardware scan.
-      ./hardware-configuration.nix
+    [
       # ./sddm.nix
-      ./fcitx5.nix
     ];
 
   # Bootloader.
