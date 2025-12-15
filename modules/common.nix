@@ -161,15 +161,6 @@ hardware.bluetooth = {
     defaultEditor = true;
   };
 
-programs.git = {
-	enable = true;
-	config = {
-		user.name = "MatteP1";
-		user.email = "mathiasp9999@gmail.com";
-		credentials.helper = "${ pkgs.git.override { withLibsecret = true; } }/bin/git-credential-libsecret";
-	};
-};
-
   nix.settings.experimental-features = [ "nix-command" "flakes" ];
 
 

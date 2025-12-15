@@ -8,6 +8,8 @@
 
   imports = [
     ./fcitx5.nix
+    ./ssh.nix
+    ./git.nix
   ];
 
 }
