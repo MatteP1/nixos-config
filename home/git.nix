@@ -14,7 +14,20 @@
 				name = "MatteP1";
 				email = "mathiasp9999@gmail.com";
 			};
+
 			init.defaultBranch = "main";
+
+			url = {
+				"git@github.com:".insteadOf = "https://github.com/";
+			};
 		};
 	};
+
+	programs.difftastic = {
+		enable = true;
+		git = {
+			enable = true;
+			diffToolMode = true;
+		};
+	};	
 }
