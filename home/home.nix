@@ -7,6 +7,7 @@
   programs.home-manager.enable = true;
 
   imports = [
+    ./neovim.nix
     ./fcitx5.nix
     ./ssh.nix
     ./git.nix

@@ -155,11 +155,6 @@ hardware.bluetooth = {
      fzf
      fd
   ];
-  
-  programs.neovim = {
-    enable = true;
-    defaultEditor = true;
-  };
 
   nix.settings.experimental-features = [ "nix-command" "flakes" ];
 
