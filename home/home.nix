@@ -12,6 +12,10 @@
     ./git.nix
   ];
 
+  home.packages = with pkgs; [
+    spotify
+  ];
+
 }
 
 
