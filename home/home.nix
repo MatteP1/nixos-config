@@ -14,6 +14,7 @@
   ];
 
   home.packages = with pkgs; [
+    prismlauncher
     spotify
   ];
 
