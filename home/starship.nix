@@ -5,7 +5,7 @@
 		enableFishIntegration = true;
 		settings = lib.mkMerge [
 			(builtins.fromTOML (
-					    builtins.readFile "${pkgs.starship}/share/starship/presets/pastel-powerline.toml"
+					    builtins.readFile "${pkgs.starship}/share/starship/presets/catppuccin-powerline.toml"
 					   ))
 		];	
 	};
