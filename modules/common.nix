@@ -64,6 +64,7 @@
     rubik
     nerd-fonts.ubuntu
     nerd-fonts.jetbrains-mono
+    nerd-fonts.fira-code
   ];
 
   # Configure keymap in X11
