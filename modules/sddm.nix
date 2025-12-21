@@ -11,7 +11,7 @@ in {
     enable = true;
     wayland.enable = true;
     enableHidpi = true;
-    package = pkgs.kdePackages.sddm;
+    # package = pkgs.kdePackages.sddm;
     extraPackages = with pkgs; [
         kdePackages.qtmultimedia
         kdePackages.qtsvg
