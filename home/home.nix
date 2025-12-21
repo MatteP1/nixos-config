@@ -8,6 +8,7 @@
 
   imports = [
     ./kitty.nix
+    ./starship.nix
     ./neovim.nix
     ./fcitx5.nix
     ./ssh.nix
@@ -18,6 +19,8 @@
     prismlauncher
     spotify
   ];
+
+  programs.fish.enable = true;
 
 }
 
