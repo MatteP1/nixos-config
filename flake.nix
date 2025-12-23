@@ -33,6 +33,7 @@
 		  nixosConfigurations = {
 			  desktop = mkHost "desktop";
 			  au-thinkpad = mkHost "au-thinkpad";
+			  ideapad = mkHost "ideapad";
 		  };
 	  };
 }
