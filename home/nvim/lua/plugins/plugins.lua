@@ -5,6 +5,11 @@
 -- * disable/enabled LazyVim plugins
 -- * override the configuration of LazyVim plugins
 return {
+
+  -- disable mason as lsps are installed by nix
+  { "mason-org/mason.nvim",           enabled = false },
+  { "mason-org/mason-lspconfig.nvim", enabled = false },
+
   {
     "whonore/Coqtail",
   },

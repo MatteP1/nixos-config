@@ -107,6 +107,7 @@
         nil
         tflint
         ruff
+        coqPackages.coq-lsp
     ];
 
   };
