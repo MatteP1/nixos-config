@@ -1,7 +1,12 @@
-{ lib, pkgs, ... }:
+{ lib, pkgs, config, ... }:
 {
 
-  home.file.".config/nvim".source = ./nvim;
+  home.file.".config/nvim".source = config.lib.file.mkOutOfStoreSymlink
+    "${config.home.homeDirectory}/nixos-config/home/nvim";
+
+  home.packages = with pkgs; [
+    tree-sitter
+  ];
 
   programs.neovim = {
     enable = true;
