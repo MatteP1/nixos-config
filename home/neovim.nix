@@ -1,10 +1,16 @@
-{ pkgs, ... }:
+{ lib, pkgs, ... }:
 {
+
+  home.file.".config/nvim".source = ./nvim;
+
   programs.neovim = {
     enable = true;
     defaultEditor = true;
     viAlias = true;
     vimAlias = true;
+
+    extraConfig = "";
+    extraLuaConfig = "";
 
     plugins = with pkgs.vimPlugins; [
 # UI and theming
@@ -64,6 +70,8 @@
                                       yaml
                                       toml
                                       nix
+                                      latex
+                                      bibtex
                                       bash
                                       dockerfile
                                       markdown
@@ -96,7 +104,5 @@
         ruff
     ];
 
-    extraConfig = "";
-    extraLuaConfig = "";
   };
 }
