@@ -151,7 +151,6 @@ hardware.bluetooth = {
      clang
      gmp
      pkg-config
-     opam
      ripgrep
      lazygit
      fzf

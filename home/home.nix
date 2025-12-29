@@ -13,6 +13,8 @@
     ./fcitx5.nix
     ./ssh.nix
     ./git.nix
+    ./opam.nix
+    ./vscode.nix
   ];
 
   home.packages = with pkgs; [
