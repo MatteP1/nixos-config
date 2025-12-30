@@ -5,7 +5,11 @@
 		fcitx5 = {
 			waylandFrontend = true;
 			addons = with pkgs; [
-				fcitx5-mozc
+        fcitx5-mozc
+        fcitx5-gtk
+        qt6Packages.fcitx5-configtool
+        fcitx5-material-color
+        catppuccin-fcitx5
 			];
 			settings = {
 				inputMethod = {
@@ -60,7 +64,7 @@
 					};
 				};
 				addons = {
-					classicui.globalSection.Theme = "stylix";
+					classicui.globalSection.Theme = "catppuccin-mocha-pink";
 				};
 			};
 		};
