@@ -5,13 +5,13 @@
 { config, pkgs, ... }:
 
 {
-  imports =
-    [
-      ./sddm.nix
-    ];
+  imports = [
+    ./sddm.nix
+  ];
 
   # Bootloader.
   boot.loader.systemd-boot.enable = true;
+  boot.loader.systemd-boot.consoleMode = "max";
   boot.loader.efi.canTouchEfiVariables = true;
 
   # networking.wireless.enable = true;  # Enables wireless support via wpa_supplicant.
@@ -41,7 +41,6 @@
     LC_TIME = "da_DK.UTF-8";
   };
 
-
   # # Enable the X11 windowing system.
   # services.xserver.enable = true;
   #
@@ -51,12 +50,11 @@
 
   services.desktopManager.plasma6.enable = true;
 
-
   # Enable Hyprland
   # programs.hyprland.enable = true;
 
   # Required services
-  services.geoclue2.enable = true;  # For QtPositioning
+  services.geoclue2.enable = true; # For QtPositioning
 
   fonts.packages = with pkgs; [
     noto-fonts
@@ -77,27 +75,27 @@
   # Enable CUPS to print documents.
   services.printing.enable = true;
 
-hardware.bluetooth = {
-  enable = true;
-  powerOnBoot = true;
-  settings = {
-    General = {
-      # Shows battery charge of connected devices on supported
-      # Bluetooth adapters. Defaults to 'false'.
-      Experimental = true;
-      # When enabled other devices can connect faster to us, however
-      # the tradeoff is increased power consumption. Defaults to
-      # 'false'.
-      FastConnectable = true;
-    };
-    Policy = {
-      # Enable all controllers when they are found. This includes
-      # adapters present on start as well as adapters that are plugged
-      # in later on. Defaults to 'true'.
-      AutoEnable = true;
+  hardware.bluetooth = {
+    enable = true;
+    powerOnBoot = true;
+    settings = {
+      General = {
+        # Shows battery charge of connected devices on supported
+        # Bluetooth adapters. Defaults to 'false'.
+        Experimental = true;
+        # When enabled other devices can connect faster to us, however
+        # the tradeoff is increased power consumption. Defaults to
+        # 'false'.
+        FastConnectable = true;
+      };
+      Policy = {
+        # Enable all controllers when they are found. This includes
+        # adapters present on start as well as adapters that are plugged
+        # in later on. Defaults to 'true'.
+        AutoEnable = true;
+      };
     };
   };
-};
 
   # Enable sound with pipewire.
   services.pulseaudio.enable = false;
@@ -122,9 +120,12 @@ hardware.bluetooth = {
   users.users.matte = {
     isNormalUser = true;
     description = "Mathias Pedersen";
-    extraGroups = [ "networkmanager" "wheel" ];
+    extraGroups = [
+      "networkmanager"
+      "wheel"
+    ];
     packages = with pkgs; [
-    #  thunderbird
+      #  thunderbird
     ];
   };
 
@@ -137,47 +138,48 @@ hardware.bluetooth = {
   # List packages installed in system profile. To search, run:
   # $ nix search wget
   environment.systemPackages = with pkgs; [
-  #  vim # Do not forget to add an editor to edit configuration.nix! The Nano editor is also installed by default.
-     wget
-     vim
-     git
-     fish
-     kitty
-     neofetch
-     sddm-astronaut
-     mattermost-desktop
-     gnumake
-     gcc
-     clang
-     gmp
-     pkg-config
-     ripgrep
-     lazygit
-     fzf
-     fd
+    #  vim # Do not forget to add an editor to edit configuration.nix! The Nano editor is also installed by default.
+    wget
+    vim
+    git
+    fish
+    kitty
+    neofetch
+    sddm-astronaut
+    mattermost-desktop
+    gnumake
+    gcc
+    clang
+    gmp
+    pkg-config
+    ripgrep
+    lazygit
+    fzf
+    fd
 
-
-# KDE
-     kdePackages.discover # Optional: Install if you use Flatpak or fwupd firmware update sevice
-     kdePackages.kcalc # Calculator
-     kdePackages.kcharselect # Tool to select and copy special characters from all installed fonts
-     kdePackages.kclock # Clock app
-     kdePackages.kcolorchooser # A small utility to select a color
-     kdePackages.kolourpaint # Easy-to-use paint program
-     kdePackages.ksystemlog # KDE SystemLog Application
-     kdePackages.sddm-kcm # Configuration module for SDDM
-     kdiff3 # Compares and merges 2 or 3 files or directories
-     kdePackages.isoimagewriter # Optional: Program to write hybrid ISO files onto USB disks
-     kdePackages.partitionmanager # Optional: Manage the disk devices, partitions and file systems on your computer
-# Non-KDE graphical packages
-     hardinfo2 # System information and benchmarks for Linux systems
-     vlc # Cross-platform media player and streaming server
-     wayland-utils # Wayland utilities
-     wl-clipboard # Command-line copy/paste utilities for Wayland
+    # KDE
+    kdePackages.discover # Optional: Install if you use Flatpak or fwupd firmware update sevice
+    kdePackages.kcalc # Calculator
+    kdePackages.kcharselect # Tool to select and copy special characters from all installed fonts
+    kdePackages.kclock # Clock app
+    kdePackages.kcolorchooser # A small utility to select a color
+    kdePackages.kolourpaint # Easy-to-use paint program
+    kdePackages.ksystemlog # KDE SystemLog Application
+    kdePackages.sddm-kcm # Configuration module for SDDM
+    kdiff3 # Compares and merges 2 or 3 files or directories
+    kdePackages.isoimagewriter # Optional: Program to write hybrid ISO files onto USB disks
+    kdePackages.partitionmanager # Optional: Manage the disk devices, partitions and file systems on your computer
+    # Non-KDE graphical packages
+    hardinfo2 # System information and benchmarks for Linux systems
+    vlc # Cross-platform media player and streaming server
+    wayland-utils # Wayland utilities
+    wl-clipboard # Command-line copy/paste utilities for Wayland
   ];
 
-  nix.settings.experimental-features = [ "nix-command" "flakes" ];
-
+  nix.settings.experimental-features = [
+    "nix-command"
+    "flakes"
+  ];
 
   # This value determines the NixOS release from which the default
   # settings for stateful data, like file locations and database versions
