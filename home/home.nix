@@ -25,5 +25,3 @@
   programs.fish.enable = true;
 
 }
-
-

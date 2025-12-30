@@ -1,33 +1,33 @@
 { pkgs, ... }:
 
 {
-	programs.git = {
-		enable = true;
-		signing = {
-			format = "ssh";
-			key = "~/.ssh/signing-key.pub";
-			# Note: the signing key must be created manually. E.g. using `ssh-keygen`.
-			signByDefault = true;
-		};
-		settings = {
-			user = {
-				name = "MatteP1";
-				email = "mathiasp9999@gmail.com";
-			};
+  programs.git = {
+    enable = true;
+    signing = {
+      format = "ssh";
+      key = "~/.ssh/signing-key.pub";
+      # Note: the signing key must be created manually. E.g. using `ssh-keygen`.
+      signByDefault = true;
+    };
+    settings = {
+      user = {
+        name = "MatteP1";
+        email = "mathiasp9999@gmail.com";
+      };
 
-			init.defaultBranch = "main";
+      init.defaultBranch = "main";
 
-			# url = {
-			# 	"git@github.com:".insteadOf = "https://github.com/";
-			# };
-		};
-	};
+      # url = {
+      # 	"git@github.com:".insteadOf = "https://github.com/";
+      # };
+    };
+  };
 
-	programs.difftastic = {
-		enable = true;
-		git = {
-			enable = true;
-			diffToolMode = true;
-		};
-	};	
+  programs.difftastic = {
+    enable = true;
+    git = {
+      enable = true;
+      diffToolMode = true;
+    };
+  };
 }

@@ -1,4 +1,5 @@
-{pkgs, ...}: {
+{ pkgs, ... }:
+{
   programs.kitty = {
     enable = true;
     # themeFile = "Catppuccin-Mocha";
@@ -18,13 +19,13 @@
     };
 
     keybindings = {
-	"kitty_mod+0" = "change_font_size all 0";
-	"kitty_mod+=" = "change_font_size all +1";
-	"kitty_mod+-" = "change_font_size all -1";
-	"kitty_mod+с" = "copy_to_clipboard";
-	"kitty_mod+v" = "paste_from_clipboard";
-	"page_up" = "scroll_page_up";
-	"page_down" = "scroll_page_down";
+      "kitty_mod+0" = "change_font_size all 0";
+      "kitty_mod+=" = "change_font_size all +1";
+      "kitty_mod+-" = "change_font_size all -1";
+      "kitty_mod+с" = "copy_to_clipboard";
+      "kitty_mod+v" = "paste_from_clipboard";
+      "page_up" = "scroll_page_up";
+      "page_down" = "scroll_page_down";
     };
   };
 }

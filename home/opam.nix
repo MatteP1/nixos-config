@@ -1,9 +1,10 @@
-{ pkgs, ... }: {
+{ pkgs, ... }:
+{
 
-	programs.opam = {
-		enable = true;
+  programs.opam = {
+    enable = true;
     enableBashIntegration = true;
     enableZshIntegration = true;
-		enableFishIntegration = true;
-	};
+    enableFishIntegration = true;
+  };
 }
