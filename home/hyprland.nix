@@ -3,15 +3,19 @@
   imports = [
     ./fuzzel.nix
     ./dunst.nix
-    ./waybar
+    ./waybar.nix
     ./hyprpaper.nix
   ];
 
   home.packages = with pkgs; [
+    xdg-utils
     xdg-desktop-portal-gtk
     xdg-desktop-portal-hyprland
     waypaper
+    hyprpicker
   ];
+
+  services.cliphist.enable = true;
 
   wayland.windowManager.hyprland = {
     # enable = true;

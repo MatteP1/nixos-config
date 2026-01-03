@@ -15,6 +15,7 @@
     enable = true;
     settings = {
       ipc = "on";
+      splash = true;
       # preload = [ wallpaper ];
       # wallpaper = [ ",${wallpaper}" ];
     };
