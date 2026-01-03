@@ -19,6 +19,7 @@
           "bluetooth"
           "network"
           "battery"
+          "custom/clipboard"
           "custom/power"
         ];
 
@@ -38,9 +39,8 @@
             "9" = "9";
             "10" = "10";
           };
-          persistent-workspaces = {
-            "*" = 5;
-          };
+          all-outputs = false;
+          active-only = false;
         };
 
         # Clock
@@ -64,34 +64,35 @@
 
         # Audio
         pulseaudio = {
-          format = "{icon} {volume}%";
-          format-muted = "󰖁 Muted";
+          format = "{icon}  {volume}%";
+          format-muted = "󰖁";
           format-icons = {
-            headphone = "";
-            hands-free = "";
-            headset = "";
-            phone = "";
-            portable = "";
-            car = "";
+            # headphone = "";
+            # hands-free = "";
+            # headset = "";
+            # phone = "";
+            # phone-muted = "";
+            # portable = "";
+            # car = "";
             default = [
-              ""
-              ""
-              ""
+              ""
+              ""
             ];
           };
           on-click = "pavucontrol";
-          on-click-right = "pactl set-sink-mute @DEFAULT_SINK@ toggle";
+          scroll-step = 5;
         };
 
         # Bluetooth
         bluetooth = {
-          format = " {status}";
+          format = " {status}";
           format-disabled = "";
-          format-connected = " {num_connections}";
-          tooltip-format = "{controller_alias}\t{controller_address}";
+          format-connected = " {num_connections}";
+          format-connected-battery = "{device_alias} {device_battery_percentage}%";
+          tooltip-format = "{device_enumerate}";
           tooltip-format-connected = "{controller_alias}\t{controller_address}\n\n{device_enumerate}";
-          tooltip-format-enumerate-connected = "{device_alias}\t{device_address}";
-          on-click = "blueman-manager";
+          tooltip-format-enumerate-connected = "{device_alias}   {device_address}";
+          on-click = "blueman-applet";
         };
 
         # Network
@@ -128,6 +129,13 @@
           tooltip-format = "{timeTo}, {capacity}%";
         };
 
+        # Clipboard
+        "custom/clipboard" = {
+          format = "󰅇";
+          tooltip = false;
+          on-click = "cliphist list | fuzzel --dmenu | cliphist decode | wl-copy";
+        };
+
         # Power menu
         "custom/power" = {
           format = "⏻";
@@ -155,6 +163,7 @@
       #bluetooth,
       #network,
       #battery,
+      #custom-clipboard,
       #custom-power {
         background: rgba(40, 40, 40, 0.95);
         padding: 5px 15px;
@@ -203,6 +212,7 @@
       #bluetooth,
       #network,
       #battery,
+      #custom-clipboard,
       #custom-power {
         margin-right: 5px;
       }
@@ -260,6 +270,16 @@
         background: rgba(255, 121, 198, 0.3);
       }
 
+      #custom-clipboard {
+        color: #ff79c6;
+        font-size: 16px;
+        padding: 5px 12px;
+      }
+
+      #custom-clipboard:hover {
+        background: rgba(255, 121, 198, 0.3);
+      }
+
       /* Tooltips */
       tooltip {
         background: rgba(40, 40, 40, 0.95);
@@ -279,5 +299,8 @@
     blueman
     networkmanagerapplet
     wlogout
+    cliphist
+    fuzzel
+    wl-clipboard
   ];
 }
