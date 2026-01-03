@@ -1,19 +1,27 @@
 { pkgs, config, ... }:
 {
+  imports = [
+    ./fuzzel.nix
+    ./dunst.nix
+    ./waybar
+  ];
+
   home.packages = with pkgs; [
-    dunst
     xdg-desktop-portal-gtk
     xdg-desktop-portal-hyprland
   ];
 
-  # wayland.windowManager.hyprland.enable = true;
-  wayland.windowManager.hyprland.settings = {
-    "$mod" = "SUPER";
-    bind = [
-      "$mod, Q, exec, kitty"
-      "$mod, R, exec, fuzzel"
-    ];
+  wayland.windowManager.hyprland = {
+    # enable = true;
+    settings = {
+      "$mod" = "SUPER";
+      bind = [
+        "$mod, Q, exec, kitty"
+        "$mod, R, exec, fuzzel"
+      ];
+    };
   };
+
   home.file.".config/hypr".source =
     config.lib.file.mkOutOfStoreSymlink "${config.home.homeDirectory}/nixos-config/home/hypr";
 

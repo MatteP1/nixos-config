@@ -15,8 +15,6 @@
     ./git.nix
     ./opam.nix
     ./hyprland.nix
-    ./waybar
-    ./fuzzel.nix
     ./vscode.nix
   ];
 
