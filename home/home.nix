@@ -14,12 +14,16 @@
     ./ssh.nix
     ./git.nix
     ./opam.nix
+    ./hyprland.nix
+    ./waybar
+    ./fuzzel.nix
     ./vscode.nix
   ];
 
   home.packages = with pkgs; [
     prismlauncher
     spotify
+    nautilus
   ];
 
   programs.fish.enable = true;

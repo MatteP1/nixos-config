@@ -7,6 +7,7 @@
 {
   imports = [
     ./sddm.nix
+    ./hyprland.nix
   ];
 
   # Bootloader.
@@ -43,15 +44,12 @@
 
   # # Enable the X11 windowing system.
   # services.xserver.enable = true;
-  #
+
   # # Enable the GNOME Desktop Environment.
   # services.displayManager.gdm.enable = true;
   # services.desktopManager.gnome.enable = true;
 
-  services.desktopManager.plasma6.enable = true;
-
-  # Enable Hyprland
-  # programs.hyprland.enable = true;
+  # services.desktopManager.plasma6.enable = true;
 
   # Required services
   services.geoclue2.enable = true; # For QtPositioning
@@ -97,6 +95,8 @@
     };
   };
 
+  services.blueman.enable = true;
+
   # Enable sound with pipewire.
   services.pulseaudio.enable = false;
   security.rtkit.enable = true;
@@ -113,6 +113,8 @@
     #media-session.enable = true;
   };
 
+  services.gvfs.enable = true;
+
   # Enable touchpad support (enabled default in most desktopManager).
   # services.xserver.libinput.enable = true;
 
@@ -127,6 +129,13 @@
     packages = with pkgs; [
       #  thunderbird
     ];
+  };
+
+  programs.nh = {
+    enable = true;
+    clean.enable = true;
+    clean.extraArgs = "--keep-since 10d --keep 5";
+    flake = "${config.users.users.matte.home}/nixos-config";
   };
 
   # Install firefox.
@@ -156,6 +165,8 @@
     lazygit
     fzf
     fd
+
+    nwg-displays
 
     # KDE
     kdePackages.discover # Optional: Install if you use Flatpak or fwupd firmware update sevice
