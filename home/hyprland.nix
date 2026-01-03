@@ -4,11 +4,13 @@
     ./fuzzel.nix
     ./dunst.nix
     ./waybar
+    ./hyprpaper.nix
   ];
 
   home.packages = with pkgs; [
     xdg-desktop-portal-gtk
     xdg-desktop-portal-hyprland
+    waypaper
   ];
 
   wayland.windowManager.hyprland = {
@@ -22,8 +24,12 @@
     };
   };
 
-  home.file.".config/hypr".source =
-    config.lib.file.mkOutOfStoreSymlink "${config.home.homeDirectory}/nixos-config/home/hypr";
+  home.file.".config/hypr/hyprland.conf".source =
+    config.lib.file.mkOutOfStoreSymlink "${config.home.homeDirectory}/nixos-config/home/hypr/hyprland.conf";
+  home.file.".config/hypr/known-monitors.conf".source =
+    config.lib.file.mkOutOfStoreSymlink "${config.home.homeDirectory}/nixos-config/home/hypr/known-monitors.conf";
+  home.file.".config/hypr/monitors.conf".source =
+    config.lib.file.mkOutOfStoreSymlink "${config.home.homeDirectory}/nixos-config/home/hypr/monitors.conf";
 
   xdg.portal = {
     enable = true;
