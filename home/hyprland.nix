@@ -1,6 +1,7 @@
 { pkgs, config, ... }:
 {
   imports = [
+    ./hypridle.nix
     ./fuzzel.nix
     # ./dunst.nix
     ./swaync
@@ -13,8 +14,10 @@
     xdg-desktop-portal-gtk
     xdg-desktop-portal-hyprland
     adwaita-icon-theme
+    brightnessctl
     waypaper
     hyprpicker
+    hypridle
   ];
 
   home.pointerCursor = {
