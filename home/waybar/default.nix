@@ -54,7 +54,7 @@
 
         # Clock with custom icon
         clock = {
-          format = "󰥔 {:%A, %B %d  %H:%M}";
+          format = "{:%A, %B %d  󰥔 %H:%M}";
           tooltip-format = "<tt><small>{calendar}</small></tt>";
           calendar = {
             mode = "month";
@@ -81,7 +81,7 @@
         # Audio Output
         pulseaudio = {
           format = "{icon} {volume}%";
-          format-muted = "󰝟 Muted";
+          format-muted = "󰝟 ";
           format-icons = {
             default = [
               "󰕿"
@@ -101,6 +101,8 @@
           format-source-muted = "󰍭";
           on-click = "wpctl set-mute @DEFAULT_AUDIO_SOURCE@ toggle";
           on-click-right = "pavucontrol -t 4";
+          on-scroll-up = "wpctl set-volume @DEFAULT_AUDIO_SOURCE@ 5%+";
+          on-scroll-down = "wpctl set-volume @DEFAULT_AUDIO_SOURCE@ 5%-";
         };
 
         # Bluetooth
@@ -113,7 +115,7 @@
           tooltip-format-connected = "{controller_alias}\t{controller_address}\n\n{device_enumerate}";
           tooltip-format-enumerate-connected = "{device_alias}\t{device_address}";
           tooltip-format-enumerate-connected-battery = "{device_alias}\t{device_address}\t󰥉 {device_battery_percentage}%";
-          on-click = "blueman-applet";
+          on-click = "blueman-manager";
         };
 
         # Network
