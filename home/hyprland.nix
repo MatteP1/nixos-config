@@ -3,7 +3,7 @@
   imports = [
     ./fuzzel.nix
     # ./dunst.nix
-    ./swaync.nix
+    ./swaync
     ./waybar
     ./hyprpaper.nix
   ];
