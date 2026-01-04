@@ -169,7 +169,7 @@
       };
     };
 
-    styleFile = ./waybar-style.css;
+    style = ./waybar-style.css;
   };
 
   # Optional: Install required packages
