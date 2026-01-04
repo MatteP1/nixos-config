@@ -22,6 +22,7 @@
     prismlauncher
     spotify
     nautilus
+    xeyes
   ];
 
   programs.fish.enable = true;

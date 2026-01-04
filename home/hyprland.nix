@@ -35,6 +35,10 @@
   home.file.".config/hypr/monitors.conf".source =
     config.lib.file.mkOutOfStoreSymlink "${config.home.homeDirectory}/nixos-config/home/hypr/monitors.conf";
 
+  home.sessionVariables = {
+    NIXOS_OZONE_WL = "1";
+  };
+
   xdg.portal = {
     enable = true;
     extraPortals = with pkgs; [
