@@ -15,37 +15,46 @@
         modules-left = [ "hyprland/workspaces" ];
         modules-center = [ "clock" ];
         modules-right = [
+          "custom/clipboard"
           "pulseaudio"
+          "pulseaudio#microphone"
           "bluetooth"
           "network"
           "battery"
-          "custom/clipboard"
           "custom/power"
         ];
 
-        # Workspaces
+        # Workspaces with Japanese numerals
         "hyprland/workspaces" = {
           format = "{icon}";
           on-click = "activate";
-          format-icons = {
-            "1" = "1";
-            "2" = "2";
-            "3" = "3";
-            "4" = "4";
-            "5" = "5";
-            "6" = "6";
-            "7" = "7";
-            "8" = "8";
-            "9" = "9";
-            "10" = "10";
+          persistent-workspaces = {
+            "1" = [ ];
+            "2" = [ ];
+            "3" = [ ];
+            "4" = [ ];
+            "5" = [ ];
           };
-          all-outputs = false;
-          active-only = false;
+          format-icons = {
+            "1" = "一";
+            "2" = "二";
+            "3" = "三";
+            "4" = "四";
+            "5" = "五";
+            "6" = "六";
+            "7" = "七";
+            "8" = "八";
+            "9" = "九";
+            "10" = "十";
+          };
+          all-outputs = true;
+          disable-scroll = true;
+          # active-only = false;
         };
 
-        # Clock
+        # Clock with custom icon
         clock = {
-          format = "{:%A, %B %d  %H:%M}";
+          format = "󰥔 {:%A, %B %d  %H:%M}";
           tooltip-format = "<tt><small>{calendar}</small></tt>";
           calendar = {
             mode = "month";
@@ -62,46 +71,67 @@
           };
         };
 
-        # Audio
+        # Clipboard
+        "custom/clipboard" = {
+          format = "󰅇";
+          tooltip = false;
+          on-click = "cliphist list | fuzzel --dmenu | cliphist decode | wl-copy";
+        };
+
+        # Audio Output
         pulseaudio = {
-          format = "{icon}  {volume}%";
-          format-muted = "󰖁";
+          format = "{icon} {volume}%";
+          format-muted = "󰝟 Muted";
           format-icons = {
-            # headphone = "";
-            # hands-free = "";
-            # headset = "";
-            # phone = "";
-            # phone-muted = "";
-            # portable = "";
-            # car = "";
             default = [
-              ""
-              ""
+              "󰕿"
+              "󰖀"
+              "󰕾"
             ];
           };
-          on-click = "pavucontrol";
           scroll-step = 5;
+          on-click = "wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle";
+          on-click-right = "pavucontrol";
+        };
+
+        # Microphone
+        "pulseaudio#microphone" = {
+          format = "{format_source}";
+          format-source = "󰍬 {volume}%";
+          format-source-muted = "󰍭";
+          on-click = "wpctl set-mute @DEFAULT_AUDIO_SOURCE@ toggle";
+          on-click-right = "pavucontrol -t 4";
         };
 
         # Bluetooth
         bluetooth = {
-          format = " {status}";
-          format-disabled = "";
-          format-connected = " {num_connections}";
-          format-connected-battery = "{device_alias} {device_battery_percentage}%";
-          tooltip-format = "{device_enumerate}";
+          format = "󰂯 {status}";
+          format-disabled = "󰂲 {status}";
+          format-connected = "󰂱 {num_connections}";
+          format-connected-battery = "󰂱 {device_alias} {device_battery_percentage}%";
+          tooltip-format = "{controller_alias}\t{controller_address}";
           tooltip-format-connected = "{controller_alias}\t{controller_address}\n\n{device_enumerate}";
-          tooltip-format-enumerate-connected = "{device_alias}   {device_address}";
+          tooltip-format-enumerate-connected = "{device_alias}\t{device_address}";
+          tooltip-format-enumerate-connected-battery = "{device_alias}\t{device_address}\t󰥉 {device_battery_percentage}%";
           on-click = "blueman-applet";
         };
 
         # Network
         network = {
-          format-wifi = " {essid}";
+          format-wifi = "{icon} {essid}";
           format-ethernet = "󰈀 {ipaddr}";
-          format-disconnected = "󰖪 Disconnected";
+          format-disconnected = "󰤭 Disconnected";
+          format-icons = {
+            wifi = [
+              "󰤯"
+              "󰤟"
+              "󰤢"
+              "󰤥"
+              "󰤨"
+            ];
+          };
           tooltip-format = "{ifname}: {ipaddr}/{cidr}";
-          tooltip-format-wifi = "{essid} ({signalStrength}%)  {ipaddr}";
+          tooltip-format-wifi = "{essid} ({signalStrength}%) {icon} {ipaddr}";
           on-click = "nm-connection-editor";
         };
 
@@ -113,8 +143,9 @@
           };
           format = "{icon} {capacity}%";
           format-charging = "󰂄 {capacity}%";
-          format-plugged = "󰂄 {capacity}%";
+          format-plugged = "󱘖 {capacity}%";
           format-icons = [
+            "󰂎"
             "󰁺"
             "󰁻"
             "󰁼"
@@ -127,13 +158,6 @@
             "󰁹"
           ];
           tooltip-format = "{timeTo}, {capacity}%";
-        };
-
-        # Clipboard
-        "custom/clipboard" = {
-          format = "󰅇";
-          tooltip = false;
-          on-click = "cliphist list | fuzzel --dmenu | cliphist decode | wl-copy";
         };
 
         # Power menu
@@ -159,11 +183,12 @@
       /* Island styling */
       #workspaces,
       #clock,
+      #custom-clipboard,
       #pulseaudio,
+      #pulseaudio.microphone,
       #bluetooth,
       #network,
       #battery,
-      #custom-clipboard,
       #custom-power {
         background: rgba(40, 40, 40, 0.95);
         padding: 5px 15px;
@@ -184,10 +209,14 @@
         background: transparent;
         border-radius: 8px;
         margin: 0 2px;
+        font-size: 16px;
+        box-shadow: none;
+        text-shadow: none;
+        transition: none;
       }
 
       #workspaces button:hover {
-        background: rgba(255, 121, 198, 0.2);
+        background: rgba(255, 121, 198, 0.3);
         color: #ff79c6;
       }
 
@@ -208,11 +237,12 @@
       }
 
       /* Right islands (hardware) */
+      #custom-clipboard,
       #pulseaudio,
+      #pulseaudio.microphone,
       #bluetooth,
       #network,
       #battery,
-      #custom-clipboard,
       #custom-power {
         margin-right: 5px;
       }
@@ -221,12 +251,38 @@
         margin-right: 10px;
       }
 
+      #custom-clipboard {
+        color: #ff79c6;
+        font-size: 16px;
+        padding: 5px 12px;
+      }
+
+      #custom-clipboard:hover {
+        background: rgba(255, 121, 198, 0.3);
+      }
+
       #pulseaudio {
         color: #ff79c6;
       }
 
+      #pulseaudio:hover {
+        background: rgba(255, 121, 198, 0.3);
+      }
+
+      #pulseaudio.microphone {
+        color: #ff79c6;
+      }
+
+      #pulseaudio.microphone:hover {
+        background: rgba(255, 121, 198, 0.3);
+      }
+
       #bluetooth {
         color: #ff79c6;
+      }
+
+      #bluetooth:hover {
+        background: rgba(255, 121, 198, 0.3);
       }
 
       #bluetooth.disabled {
@@ -235,6 +291,10 @@
 
       #network {
         color: #ff79c6;
+      }
+
+      #network:hover {
+        background: rgba(255, 121, 198, 0.3);
       }
 
       #network.disconnected {
@@ -267,16 +327,6 @@
       }
 
       #custom-power:hover {
-        background: rgba(255, 121, 198, 0.3);
-      }
-
-      #custom-clipboard {
-        color: #ff79c6;
-        font-size: 16px;
-        padding: 5px 12px;
-      }
-
-      #custom-clipboard:hover {
         background: rgba(255, 121, 198, 0.3);
       }
 
