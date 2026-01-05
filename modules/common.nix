@@ -7,7 +7,7 @@
 {
   imports = [
     ./sddm.nix
-    ./hyprland.nix
+    # ./hyprland.nix
   ];
 
   # Bootloader.
@@ -49,7 +49,7 @@
   # services.displayManager.gdm.enable = true;
   # services.desktopManager.gnome.enable = true;
 
-  # services.desktopManager.plasma6.enable = true;
+  services.desktopManager.plasma6.enable = true;
 
   # Required services
   services.geoclue2.enable = true; # For QtPositioning
