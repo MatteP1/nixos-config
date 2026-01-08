@@ -156,7 +156,6 @@
     kitty
     neofetch
     sddm-astronaut
-    mattermost-desktop
     gnumake
     gcc
     clang

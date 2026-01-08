@@ -23,6 +23,8 @@
     spotify
     nautilus
     xeyes
+    mattermost-desktop
+    slack
   ];
 
   programs.fish.enable = true;
