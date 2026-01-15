@@ -7,6 +7,7 @@
 {
   imports = [
     ./sddm.nix
+    ./flatpak.nix
     # ./hyprland.nix
   ];
 
