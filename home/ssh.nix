@@ -6,7 +6,7 @@
     enableDefaultConfig = false;
     matchBlocks."*" = {
       forwardAgent = false;
-      addKeysToAgent = "confirm";
+      addKeysToAgent = "yes";
       compression = false;
       serverAliveInterval = 0;
       serverAliveCountMax = 3;
@@ -17,4 +17,5 @@
       controlPersist = "no";
     };
   };
+  services.ssh-agent.enable = true;
 }
