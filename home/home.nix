@@ -25,6 +25,7 @@
     xeyes
     mattermost-desktop
     slack
+    snitch
   ];
 
   programs.fish.enable = true;
