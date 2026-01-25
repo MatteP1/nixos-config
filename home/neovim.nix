@@ -6,8 +6,10 @@
 }:
 {
 
-  home.file.".config/nvim".source =
-    config.lib.file.mkOutOfStoreSymlink "${config.home.homeDirectory}/nixos-config/home/nvim";
+  # home.file.".config/nvim/myconf".source =
+  #   config.lib.file.mkOutOfStoreSymlink "${config.home.homeDirectory}/nixos-config/home/nvim";
+
+  xdg.configFile."nvim".source = ./nvim;
 
   home.packages = with pkgs; [
     tree-sitter
@@ -20,7 +22,7 @@
     vimAlias = true;
 
     extraConfig = "";
-    extraLuaConfig = "";
+    initLua = "";
 
     plugins = with pkgs.vimPlugins; [
       # UI and theming
