@@ -14,7 +14,7 @@
     ./ssh.nix
     ./git.nix
     ./opam.nix
-    # ./hyprland.nix
+    ./hyprland.nix
     ./vscode.nix
   ];
 

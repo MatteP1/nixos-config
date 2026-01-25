@@ -9,8 +9,8 @@
     ./sddm.nix
     ./flatpak.nix
     ./openTableDriver.nix
-    # ./hyprland.nix
-    ./niri.nix
+    ./hyprland.nix
+    # ./niri.nix
   ];
 
   # Bootloader.

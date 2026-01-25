@@ -1,12 +1,11 @@
 { pkgs, config, ... }:
 {
   imports = [
-    ./hypridle.nix
+    # ./hypridle.nix
     ./fuzzel.nix
-    # ./dunst.nix
-    ./swaync
-    ./waybar
-    ./hyprpaper.nix
+    # ./swaync
+    # ./waybar
+    # ./hyprpaper.nix
   ];
 
   home.packages = with pkgs; [
@@ -50,19 +49,32 @@
   services.cliphist.enable = true;
 
   wayland.windowManager.hyprland = {
-    # enable = true;
+    enable = true;
+
     settings = {
       "$mod" = "SUPER";
-      bind = [
-        "$mod, Q, exec, kitty"
-        "$mod, R, exec, fuzzel"
-      ];
+      input = {
+        kb_layout = "us";
+        kb_variant = "colemak";
+        follow_mouse = 1;
+        sensitivity = 0;
+
+        touchpad = {
+          natural_scroll = true;
+        };
+      };
     };
+    extraConfig = ''
+      source = ~/.config/hypr/myconf/hyprland.conf
+      source = ~/.config/hypr/monitors.conf
+      source = ~/.config/hypr/myconf/monitors.conf
+      source = ~/.config/hypr/dms/*
+    '';
   };
 
-  home.file.".config/hypr/hyprland.conf".source =
+  home.file.".config/hypr/myconf/hyprland.conf".source =
     config.lib.file.mkOutOfStoreSymlink "${config.home.homeDirectory}/nixos-config/home/hypr/hyprland.conf";
-  home.file.".config/hypr/known-monitors.conf".source =
+  home.file.".config/hypr/myconf/monitors.conf".source =
     config.lib.file.mkOutOfStoreSymlink "${config.home.homeDirectory}/nixos-config/home/hypr/known-monitors.conf";
   home.file.".config/hypr/monitors.conf".source =
     config.lib.file.mkOutOfStoreSymlink "${config.home.homeDirectory}/nixos-config/home/hypr/monitors.conf";
