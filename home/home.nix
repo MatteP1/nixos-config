@@ -26,6 +26,7 @@
     mattermost-desktop
     slack
     snitch
+    osu-lazer-bin
   ];
 
   programs.fish.enable = true;
