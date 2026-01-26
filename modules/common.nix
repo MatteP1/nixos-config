@@ -55,6 +55,7 @@
   # services.desktopManager.plasma6.enable = true;
 
   # Required services
+  services.upower.enable = true;
   services.geoclue2.enable = true; # For QtPositioning
 
   fonts.packages = with pkgs; [
@@ -173,6 +174,7 @@
     fd
 
     nwg-displays
+    networkmanagerapplet
 
     # KDE
     kdePackages.discover # Optional: Install if you use Flatpak or fwupd firmware update sevice
