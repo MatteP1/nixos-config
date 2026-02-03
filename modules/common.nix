@@ -11,6 +11,7 @@
     ./openTableDriver.nix
     ./hyprland.nix
     # ./niri.nix
+    # ./virtualbox.nix
   ];
 
   # Bootloader.
