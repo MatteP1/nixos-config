@@ -12,6 +12,7 @@
     ./hyprland.nix
     # ./niri.nix
     # ./virtualbox.nix
+    # ./immich.nix
   ];
 
   # Bootloader.
