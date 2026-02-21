@@ -12,14 +12,15 @@ let
   # LSP servers available as nix packages
   lspServers = with pkgs; [
     lua-language-server
-    nixd # nix lsp (replaces nil)
+    nixd
     nodePackages.typescript-language-server
     nodePackages.vscode-langservers-extracted # html/css/json/eslint
     rust-analyzer
     gopls
     pyright
-    clang-tools # clangd
-    marksman # markdown lsp
+    clang-tools
+    marksman
+    coqPackages.coq-lsp
   ];
 
   # Formatters/linters
@@ -43,11 +44,11 @@ let
       fzf
       git
       tree-sitter
-      gcc # for treesitter compilation
+      gcc
       gnumake
       curl
       lazygit
-      coq # for Coqtail (or use pkgs.coq_8_19 etc. for a specific version)
+      coq
     ]
     ++ lspServers
     ++ formatters;
@@ -225,59 +226,31 @@ in
         config = ''
           local dashboard = require("alpha.themes.dashboard")
           dashboard.section.header.val = {
-            "                                                     ",
-            "  ███╗   ██╗███████╗ ██████╗ ██╗   ██╗██╗███╗   ███╗",
-            "  ████╗  ██║██╔════╝██╔═══██╗██║   ██║██║████╗ ████║",
-            "  ██╔██╗ ██║█████╗  ██║   ██║██║   ██║██║██╔████╔██║",
-            "  ██║╚██╗██║██╔══╝  ██║   ██║╚██╗ ██╔╝██║██║╚██╔╝██║",
-            "  ██║ ╚████║███████╗╚██████╔╝ ╚████╔╝ ██║██║ ╚═╝ ██║",
-            "  ╚═╝  ╚═══╝╚══════╝ ╚═════╝   ╚═══╝  ╚═╝╚═╝     ╚═╝",
-            "                                                     ",
+            "                                                  ",
+            "  ███╗   ███╗ █████╗ ████████╗████████╗███████╗  ",
+            "  ████╗ ████║██╔══██╗╚══██╔══╝╚══██╔══╝██╔════╝  ",
+            "  ██╔████╔██║███████║   ██║      ██║   █████╗    ",
+            "  ██║╚██╔╝██║██╔══██║   ██║      ██║   ██╔══╝    ",
+            "  ██║ ╚═╝ ██║██║  ██║   ██║      ██║   ███████╗  ",
+            "  ╚═╝     ╚═╝╚═╝  ╚═╝   ╚═╝      ╚═╝   ╚══════╝  ",
+            "                                                  ",
           }
           dashboard.section.buttons.val = {
-            dashboard.button("f", " " .. " Find file",    ":Telescope find_files <CR>"),
-            dashboard.button("n", " " .. " New file",     ":ene <BAR> startinsert <CR>"),
-            dashboard.button("r", " " .. " Recent files", ":Telescope oldfiles <CR>"),
-            dashboard.button("g", " " .. " Find text",    ":Telescope live_grep <CR>"),
-            dashboard.button("c", " " .. " Config",       ":e $MYVIMRC <CR>"),
-            dashboard.button("q", " " .. " Quit",         ":qa<CR>"),
+            dashboard.button("f", " " .. " Find file",          ":Telescope find_files <CR>"),
+            dashboard.button("n", " " .. " New file",           ":ene <BAR> startinsert <CR>"),
+            dashboard.button("r", " " .. " Recent files",       ":Telescope oldfiles <CR>"),
+            dashboard.button("g", " " .. " Find text",          ":Telescope live_grep <CR>"),
+            dashboard.button("c", " " .. " Config",             ":e ~/nixos-config/home/neovim.nix <CR>"),
+            dashboard.button("C", " " .. " Config (generated)", ":e $MYVIMRC <CR>"),
+            dashboard.button("q", " " .. " Quit",               ":qa<CR>"),
           }
           require("alpha").setup(dashboard.opts)
         '';
       }
 
-      {
-        plugin = which-key-nvim;
-        type = "lua";
-        config = ''
-          local wk = require("which-key")
-          wk.setup({
-            plugins = { spelling = true },
-            defaults = {},
-          })
-          wk.register({
-            ["<leader>"] = {
-              b = { name = "+buffer" },
-              c = { name = "+code" },
-              f = { name = "+file/find" },
-              g = { name = "+git" },
-              gh = { name = "+hunks" },
-              q = { name = "+quit/session" },
-              s = { name = "+search" },
-              u = { name = "+ui" },
-              w = { name = "+windows" },
-              x = { name = "+diagnostics/quickfix" },
-            },
-          })
-        '';
-      }
+      which-key-nvim
 
-      # ─── Coq / Proof Assistants ────────────────────────────────────
-      {
-        plugin = Coqtail; # pkgs.vimPlugins.Coqtail
-        type = "lua";
-        config = "";
-      }
+      Coqtail
 
       # ─── latex-unicoder ────────────────────────────────────────────
       # {
