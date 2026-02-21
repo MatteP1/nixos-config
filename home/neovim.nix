@@ -69,6 +69,7 @@ in
 
     extraPackages = runtimeDeps;
     extraPython3Packages = ps: with ps; [ pynvim ];
+    extraLuaPackages = ps: [ ps.jsregexp ];
 
     extraConfig = ''
       let g:python3_host_prog = '${python3Env}/bin/python3'
@@ -226,14 +227,14 @@ in
         config = ''
           local dashboard = require("alpha.themes.dashboard")
           dashboard.section.header.val = {
-            "                                                  ",
-            "  ███╗   ███╗ █████╗ ████████╗████████╗███████╗  ",
-            "  ████╗ ████║██╔══██╗╚══██╔══╝╚══██╔══╝██╔════╝  ",
-            "  ██╔████╔██║███████║   ██║      ██║   █████╗    ",
-            "  ██║╚██╔╝██║██╔══██║   ██║      ██║   ██╔══╝    ",
-            "  ██║ ╚═╝ ██║██║  ██║   ██║      ██║   ███████╗  ",
-            "  ╚═╝     ╚═╝╚═╝  ╚═╝   ╚═╝      ╚═╝   ╚══════╝  ",
-            "                                                  ",
+            "                                                                  ",
+            "  ███╗   ███╗ █████╗ ████████╗████████╗███████╗    ██████╗  ██╗  ",
+            "  ████╗ ████║██╔══██╗╚══██╔══╝╚══██╔══╝██╔════╝    ██╔══██╗███║  ",
+            "  ██╔████╔██║███████║   ██║      ██║   █████╗      ██████╔╝╚██║  ",
+            "  ██║╚██╔╝██║██╔══██║   ██║      ██║   ██╔══╝      ██╔═══╝  ██║  ",
+            "  ██║ ╚═╝ ██║██║  ██║   ██║      ██║   ███████╗    ██║      ██║  ",
+            "  ╚═╝     ╚═╝╚═╝  ╚═╝   ╚═╝      ╚═╝   ╚══════╝    ╚═╝      ╚═╝  ",
+            "                                                                  ",
           }
           dashboard.section.buttons.val = {
             dashboard.button("f", " " .. " Find file",          ":Telescope find_files <CR>"),
@@ -390,98 +391,7 @@ in
       nvim-treesitter-context
 
       # ─── LSP ───────────────────────────────────────────────────────
-      {
-        plugin = nvim-lspconfig;
-        type = "lua";
-        config = ''
-          -- Diagnostics UI
-          vim.diagnostic.config({
-            underline = true,
-            update_in_insert = false,
-            virtual_text = {
-              spacing = 4,
-              source = "if_many",
-              prefix = "●",
-            },
-            severity_sort = true,
-            signs = {
-              text = {
-                [vim.diagnostic.severity.ERROR] = " ",
-                [vim.diagnostic.severity.WARN]  = " ",
-                [vim.diagnostic.severity.HINT]  = " ",
-                [vim.diagnostic.severity.INFO]  = " ",
-              },
-            },
-          })
-
-          -- Floating border for hover/signature
-          local orig_util_open_floating_preview = vim.lsp.util.open_floating_preview
-          function vim.lsp.util.open_floating_preview(contents, syntax, opts, ...)
-            opts = opts or {}
-            opts.border = opts.border or "rounded"
-            return orig_util_open_floating_preview(contents, syntax, opts, ...)
-          end
-
-          local lspconfig = require("lspconfig")
-          local capabilities = vim.lsp.protocol.make_client_capabilities()
-
-          -- Extend capabilities with nvim-cmp
-          local ok, cmp_nvim_lsp = pcall(require, "cmp_nvim_lsp")
-          if ok then
-            capabilities = cmp_nvim_lsp.default_capabilities(capabilities)
-          end
-
-          local on_attach = function(client, bufnr)
-            local map = function(mode, lhs, rhs, desc)
-              vim.keymap.set(mode, lhs, rhs, { buffer = bufnr, desc = "LSP: " .. desc })
-            end
-            map("n", "gd",         vim.lsp.buf.definition,       "Goto Definition")
-            map("n", "gD",         vim.lsp.buf.declaration,      "Goto Declaration")
-            map("n", "gr",         "<cmd>Telescope lsp_references<cr>", "References")
-            map("n", "gI",         "<cmd>Telescope lsp_implementations<cr>", "Goto Implementation")
-            map("n", "gy",         "<cmd>Telescope lsp_type_definitions<cr>", "Goto T[y]pe Definition")
-            map("n", "K",          vim.lsp.buf.hover,            "Hover")
-            map("n", "gK",         vim.lsp.buf.signature_help,   "Signature Help")
-            map("i", "<c-k>",      vim.lsp.buf.signature_help,   "Signature Help")
-            map("n", "<leader>ca", vim.lsp.buf.code_action,      "Code Action")
-            map("v", "<leader>ca", vim.lsp.buf.code_action,      "Code Action")
-            map("n", "<leader>cr", vim.lsp.buf.rename,           "Rename")
-            map("n", "<leader>cf", function() vim.lsp.buf.format({ async = true }) end, "Format")
-          end
-
-          local servers = {
-            lua_ls = {
-              settings = {
-                Lua = {
-                  workspace = { checkThirdParty = false },
-                  codeLens = { enable = true },
-                  completion = { callSnippet = "Replace" },
-                },
-              },
-            },
-            nixd = {},
-            ts_ls = {},
-            html = {},
-            cssls = {},
-            jsonls = {},
-            eslint = {},
-            rust_analyzer = {},
-            gopls = {},
-            pyright = {},
-            clangd = {},
-            marksman = {},
-          }
-
-          for server, opts in pairs(servers) do
-            opts.capabilities = capabilities
-            opts.on_attach = on_attach
-            local ok2, _ = pcall(lspconfig[server].setup, opts)
-            if not ok2 then
-              -- server binary not found; skip silently
-            end
-          end
-        '';
-      }
+      nvim-lspconfig
 
       # ─── Completion ────────────────────────────────────────────────
       {
@@ -566,14 +476,14 @@ in
             formatters_by_ft = {
               lua        = { "stylua" },
               nix        = { "nixfmt" },
-              javascript = { "prettierd", "prettier" },
-              typescript = { "prettierd", "prettier" },
-              javascriptreact = { "prettierd", "prettier" },
-              typescriptreact = { "prettierd", "prettier" },
-              json       = { "prettierd", "prettier" },
-              html       = { "prettierd", "prettier" },
-              css        = { "prettierd", "prettier" },
-              markdown   = { "prettierd", "prettier" },
+              javascript      = { "prettierd" },
+              typescript      = { "prettierd" },
+              javascriptreact = { "prettierd" },
+              typescriptreact = { "prettierd" },
+              json            = { "prettierd" },
+              html            = { "prettierd" },
+              css             = { "prettierd" },
+              markdown        = { "prettierd" },
               python     = { "isort", "black" },
               sh         = { "shfmt" },
               go         = { "gofumpt" },
@@ -882,6 +792,87 @@ in
     ]; # end plugins
 
     initLua = ''
+      -- ─── LSP (Neovim 0.11+ native API) ───────────────────────────────
+      vim.diagnostic.config({
+        underline        = true,
+        update_in_insert = false,
+        virtual_text = {
+          spacing = 4,
+          source  = "if_many",
+          prefix  = "●",
+        },
+        severity_sort = true,
+        signs = {
+          text = {
+            [vim.diagnostic.severity.ERROR] = " ",
+            [vim.diagnostic.severity.WARN]  = " ",
+            [vim.diagnostic.severity.HINT]  = " ",
+            [vim.diagnostic.severity.INFO]  = " ",
+          },
+        },
+      })
+
+      -- Rounded borders for hover / signature help
+      local orig = vim.lsp.util.open_floating_preview
+      function vim.lsp.util.open_floating_preview(contents, syntax, opts, ...)
+        opts = opts or {}
+        opts.border = opts.border or "rounded"
+        return orig(contents, syntax, opts, ...)
+      end
+
+      -- Extend capabilities for nvim-cmp
+      local capabilities = vim.lsp.protocol.make_client_capabilities()
+      local ok_cmp, cmp_nvim_lsp = pcall(require, "cmp_nvim_lsp")
+      if ok_cmp then
+        capabilities = cmp_nvim_lsp.default_capabilities(capabilities)
+      end
+
+      -- Keymaps on attach
+      vim.api.nvim_create_autocmd("LspAttach", {
+        group = vim.api.nvim_create_augroup("lsp_keymaps", { clear = true }),
+        callback = function(ev)
+          local map = function(mode, lhs, rhs, desc)
+            vim.keymap.set(mode, lhs, rhs, { buffer = ev.buf, desc = "LSP: " .. desc })
+          end
+          map("n", "gd",         vim.lsp.buf.definition,                    "Goto Definition")
+          map("n", "gD",         vim.lsp.buf.declaration,                   "Goto Declaration")
+          map("n", "gr",         "<cmd>Telescope lsp_references<cr>",       "References")
+          map("n", "gI",         "<cmd>Telescope lsp_implementations<cr>",  "Goto Implementation")
+          map("n", "gy",         "<cmd>Telescope lsp_type_definitions<cr>", "Goto T[y]pe Definition")
+          map("n", "K",          vim.lsp.buf.hover,                         "Hover")
+          map("n", "gK",         vim.lsp.buf.signature_help,                "Signature Help")
+          map("i", "<c-k>",      vim.lsp.buf.signature_help,                "Signature Help")
+          map("n", "<leader>ca", vim.lsp.buf.code_action,                   "Code Action")
+          map("v", "<leader>ca", vim.lsp.buf.code_action,                   "Code Action")
+          map("n", "<leader>cr", vim.lsp.buf.rename,                        "Rename")
+          map("n", "<leader>cf", function() vim.lsp.buf.format({ async = true }) end, "Format")
+        end,
+      })
+
+      -- Apply capabilities to all servers
+      vim.lsp.config("*", { capabilities = capabilities })
+
+      -- lua_ls needs extra settings
+      vim.lsp.config("lua_ls", {
+        settings = {
+          Lua = {
+            workspace  = { checkThirdParty = false },
+            codeLens   = { enable = true },
+            completion = { callSnippet = "Replace" },
+          },
+        },
+      })
+
+      -- Enable all servers (binaries are on PATH via extraPackages)
+      vim.lsp.enable({
+        "lua_ls", "nixd", "ts_ls", "html", "cssls",
+        "jsonls", "eslint", "rust_analyzer", "gopls",
+        "pyright", "clangd", "marksman",
+      })
+
+
+
+
       -- ─── Options ─────────────────────────────────────────────────────
       local opt = vim.opt
 
@@ -1071,7 +1062,7 @@ in
       -- Highlight on yank
       vim.api.nvim_create_autocmd("TextYankPost", {
         group = augroup("highlight_yank"),
-        callback = function() vim.highlight.on_yank() end,
+        callback = function() vim.hl.on_yank() end,
       })
 
       -- Resize splits if window got resized
