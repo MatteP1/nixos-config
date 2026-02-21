@@ -55,6 +55,16 @@ let
 
   python3Env = pkgs.python3.withPackages (ps: [ ps.pynvim ]);
 
+  latex-unicoder = pkgs.vimUtils.buildVimPlugin {
+    name = "latex-unicoder";
+    src = pkgs.fetchFromGitHub {
+      owner = "joom";
+      repo = "latex-unicoder.vim";
+      rev = "705d9e5705f2612df7220d3650e287b97c0e996a";
+      sha256 = "1w49riywnwr67kgaafx07pmfw9hqgpf69kf1aw2ygncfai3c4462";
+    };
+  };
+
 in
 {
   programs.neovim = {
@@ -254,56 +264,66 @@ in
       Coqtail
 
       # ─── latex-unicoder ────────────────────────────────────────────
-      # {
-      #   plugin = fromGitHub "joom" "latex-unicoder.vim" "master"
-      #     "sha256-AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=";
-      #   # ↑ Replace with: nix-prefetch-url --unpack https://github.com/joom/latex-unicoder.vim/archive/master.tar.gz
-      #   type = "lua";
-      #   config = ''
-      #     vim.g.unicode_map = {
-      #       ["\\fun"]     = "λ",
-      #       ["\\mult"]    = "⋅",
-      #       ["\\ent"]     = "⊢",
-      #       ["\\valid"]   = "✓",
-      #       ["\\diamond"] = "◇",
-      #       ["\\box"]     = "□",
-      #       ["\\bbox"]    = "■",
-      #       ["\\later"]   = "▷",
-      #       ["\\pred"]    = "φ",
-      #       ["\\and"]     = "∧",
-      #       ["\\or"]      = "∨",
-      #       ["\\comp"]    = "∘",
-      #       ["\\ccomp"]   = "◎",
-      #       ["\\all"]     = "∀",
-      #       ["\\ex"]      = "∃",
-      #       ["\\to"]      = "→",
-      #       ["\\sep"]     = "∗",
-      #       ["\\lc"]      = "⌜",
-      #       ["\\rc"]      = "⌝",
-      #       ["\\Lc"]      = "⎡",
-      #       ["\\Rc"]      = "⎤",
-      #       ["\\lam"]     = "λ",
-      #       ["\\empty"]   = "∅",
-      #       ["\\Lam"]     = "Λ",
-      #       ["\\Sig"]     = "Σ",
-      #       ["\\-"]       = "∖",
-      #       ["\\aa"]      = "●",
-      #       ["\\af"]      = "◯",
-      #       ["\\auth"]    = "●",
-      #       ["\\frag"]    = "◯",
-      #       ["\\iff"]     = "↔",
-      #       ["\\gname"]   = "γ",
-      #       ["\\incl"]    = "≼",
-      #       ["\\latert"]  = "▶",
-      #       ["\\update"]  = "⇝",
-      #       ['\\"o']      = "ö",
-      #       ["_a"] = "ₐ", ["_e"] = "ₑ", ["_h"] = "ₕ", ["_i"] = "ᵢ",
-      #       ["_k"] = "ₖ", ["_l"] = "ₗ", ["_m"] = "ₘ", ["_n"] = "ₙ",
-      #       ["_o"] = "ₒ", ["_p"] = "ₚ", ["_r"] = "ᵣ", ["_s"] = "ₛ",
-      #       ["_t"] = "ₜ", ["_u"] = "ᵤ", ["_v"] = "ᵥ", ["_x"] = "ₓ",
-      #     }
-      #   '';
-      # }
+      {
+        plugin = latex-unicoder;
+        type = "lua";
+        config = ''
+          vim.g.unicode_map = {
+            ["\\fun"]     = "λ",
+            ["\\mult"]    = "⋅",
+            ["\\ent"]     = "⊢",
+            ["\\valid"]   = "✓",
+            ["\\diamond"] = "◇",
+            ["\\box"]     = "□",
+            ["\\bbox"]    = "■",
+            ["\\later"]   = "▷",
+            ["\\pred"]    = "φ",
+            ["\\and"]     = "∧",
+            ["\\or"]      = "∨",
+            ["\\comp"]    = "∘",
+            ["\\ccomp"]   = "◎",
+            ["\\all"]     = "∀",
+            ["\\ex"]      = "∃",
+            ["\\to"]      = "→",
+            ["\\sep"]     = "∗",
+            ["\\lc"]      = "⌜",
+            ["\\rc"]      = "⌝",
+            ["\\Lc"]      = "⎡",
+            ["\\Rc"]      = "⎤",
+            ["\\lam"]     = "λ",
+            ["\\empty"]   = "∅",
+            ["\\Lam"]     = "Λ",
+            ["\\Sig"]     = "Σ",
+            ["\\-"]       = "∖",
+            ["\\aa"]      = "●",
+            ["\\af"]      = "◯",
+            ["\\auth"]    = "●",
+            ["\\frag"]    = "◯",
+            ["\\iff"]     = "↔",
+            ["\\gname"]   = "γ",
+            ["\\incl"]    = "≼",
+            ["\\latert"]  = "▶",
+            ["\\update"]  = "⇝",
+            ['\\"o']      = "ö",
+            ["_a"]        = "ₐ",
+            ["_e"]        = "ₑ",
+            ["_h"]        = "ₕ",
+            ["_i"]        = "ᵢ",
+            ["_k"]        = "ₖ",
+            ["_l"]        = "ₗ",
+            ["_m"]        = "ₘ",
+            ["_n"]        = "ₙ",
+            ["_o"]        = "ₒ",
+            ["_p"]        = "ₚ",
+            ["_r"]        = "ᵣ",
+            ["_s"]        = "ₛ",
+            ["_t"]        = "ₜ",
+            ["_u"]        = "ᵤ",
+            ["_v"]        = "ᵥ",
+            ["_x"]        = "ₓ",
+          }
+        '';
+      }
 
       # ─── File Explorer ─────────────────────────────────────────────
       {
