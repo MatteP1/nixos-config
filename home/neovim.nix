@@ -258,6 +258,8 @@ in
         plugin = latex-unicoder;
         type = "lua";
         config = ''
+          vim.g.unicoder_no_map = true
+          vim.keymap.set("i", "<C-l>", "<Plug>Unicoder", { desc = "Unicode input" })
           vim.g.unicode_map = {
             ["\\fun"]     = "λ",
             ["\\mult"]    = "⋅",
