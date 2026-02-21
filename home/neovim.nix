@@ -160,24 +160,6 @@ in
       nvim-web-devicons
 
       {
-        plugin = indent-blankline-nvim;
-        type = "lua";
-        config = ''
-          require("ibl").setup({
-            indent = { char = "│", tab_char = "│" },
-            scope = { enabled = false },
-            exclude = {
-              filetypes = {
-                "help", "alpha", "dashboard", "neo-tree", "Trouble",
-                "trouble", "lazy", "mason", "notify", "toggleterm",
-                "lazyterm",
-              },
-            },
-          })
-        '';
-      }
-
-      {
         plugin = noice-nvim;
         type = "lua";
         config = ''
@@ -415,16 +397,16 @@ in
               sections = {
                 { section = "header" },
                 { section = "keys", gap = 1, padding = 1 },
-                { section = "startup" },
               },
               preset = {
-                header = [[
-                  ███╗   ███╗ █████╗ ████████╗████████╗███████╗    ██████╗  ██╗
-                  ████╗ ████║██╔══██╗╚══██╔══╝╚══██╔══╝██╔════╝    ██╔══██╗███║
-                  ██╔████╔██║███████║   ██║      ██║   █████╗      ██████╔╝╚██║
-                  ██║╚██╔╝██║██╔══██║   ██║      ██║   ██╔══╝      ██╔═══╝  ██║
-                  ██║ ╚═╝ ██║██║  ██║   ██║      ██║   ███████╗    ██║      ██║
-                  ╚═╝     ╚═╝╚═╝  ╚═╝   ╚═╝      ╚═╝   ╚══════╝    ╚═╝      ╚═╝]],
+                header = table.concat({
+                  "███╗   ███╗ █████╗ ████████╗████████╗███████╗    ██████╗  ██╗",
+                  "████╗ ████║██╔══██╗╚══██╔══╝╚══██╔══╝██╔════╝    ██╔══██╗███║",
+                  "██╔████╔██║███████║   ██║      ██║   █████╗      ██████╔╝╚██║",
+                  "██║╚██╔╝██║██╔══██║   ██║      ██║   ██╔══╝      ██╔═══╝  ██║",
+                  "██║ ╚═╝ ██║██║  ██║   ██║      ██║   ███████╗    ██║      ██║",
+                  "╚═╝     ╚═╝╚═╝  ╚═╝   ╚═╝      ╚═╝   ╚══════╝    ╚═╝      ╚═╝",
+                }, "\n"),
                 keys = {
                   { icon = " ", key = "f", desc = "Find File",          action = function() Snacks.picker.files() end },
                   { icon = " ", key = "n", desc = "New File",           action = ":ene | startinsert" },
@@ -449,7 +431,7 @@ in
             image    = { enabled = true },
 
             indent = {
-              enabled = false,
+              enabled = true,
               char  = "│",
               blank = " ",
               scope = { enabled = true, char = "│" },
@@ -457,6 +439,7 @@ in
                 filetypes = {
                   "help", "dashboard", "snacks_dashboard", "Trouble",
                   "trouble", "notify", "toggleterm",
+                  "alpha", "neo-tree", "lazy", "mason", "lazyterm",
                 },
               },
             },
@@ -904,26 +887,6 @@ in
         type = "lua";
         config = ''
           require("colorizer").setup()
-        '';
-      }
-
-      {
-        plugin = vim-illuminate;
-        type = "lua";
-        config = ''
-          require("illuminate").configure({
-            delay = 200,
-            large_file_cutoff = 2000,
-            large_file_overrides = { providers = { "lsp" } },
-          })
-        '';
-      }
-
-      {
-        plugin = dressing-nvim;
-        type = "lua";
-        config = ''
-          require("dressing").setup()
         '';
       }
 
