@@ -405,10 +405,146 @@ in
 
       telescope-fzf-native-nvim
 
+      {
+        plugin = snacks-nvim;
+        type = "lua";
+        config = ''
+          require("snacks").setup({
+            dashboard = {
+              enabled = false,
+              sections = {
+                { section = "header" },
+                { section = "keys", gap = 1, padding = 1 },
+                { section = "startup" },
+              },
+              preset = {
+                header = [[
+                  ███╗   ███╗ █████╗ ████████╗████████╗███████╗    ██████╗  ██╗
+                  ████╗ ████║██╔══██╗╚══██╔══╝╚══██╔══╝██╔════╝    ██╔══██╗███║
+                  ██╔████╔██║███████║   ██║      ██║   █████╗      ██████╔╝╚██║
+                  ██║╚██╔╝██║██╔══██║   ██║      ██║   ██╔══╝      ██╔═══╝  ██║
+                  ██║ ╚═╝ ██║██║  ██║   ██║      ██║   ███████╗    ██║      ██║
+                  ╚═╝     ╚═╝╚═╝  ╚═╝   ╚═╝      ╚═╝   ╚══════╝    ╚═╝      ╚═╝]],
+                keys = {
+                  { icon = " ", key = "f", desc = "Find File",          action = function() Snacks.picker.files() end },
+                  { icon = " ", key = "n", desc = "New File",           action = ":ene | startinsert" },
+                  { icon = " ", key = "r", desc = "Recent Files",       action = function() Snacks.picker.recent() end },
+                  { icon = " ", key = "g", desc = "Find Text",          action = function() Snacks.picker.grep() end },
+                  { icon = " ", key = "c", desc = "Config",             action = ":e ~/nixos-config/home/neovim.nix" },
+                  { icon = " ", key = "C", desc = "Config (generated)", action = ":e $MYVIMRC" },
+                  { icon = " ", key = "q", desc = "Quit",               action = ":qa" },
+                },
+              },
+            },
+
+            notifier = {
+              enabled = false,
+              timeout = 3000,
+              style   = "compact",
+            },
+
+            picker   = { enabled = false },
+            explorer = { enabled = false },
+            lazygit  = { enabled = true },
+            image    = { enabled = true },
+
+            indent = {
+              enabled = false,
+              char  = "│",
+              blank = " ",
+              scope = { enabled = true, char = "│" },
+              exclude = {
+                filetypes = {
+                  "help", "dashboard", "snacks_dashboard", "Trouble",
+                  "trouble", "notify", "toggleterm",
+                },
+              },
+            },
+
+            bigfile      = { enabled = true },
+            bufdelete    = { enabled = true },
+            gitbrowse    = { enabled = true },
+            input        = { enabled = true },
+            quickfile    = { enabled = true },
+            scratch      = { enabled = true },
+            scroll       = { enabled = true },
+            scope        = { enabled = true },
+            statuscolumn = { enabled = true },
+            toggle       = { enabled = true },
+            words        = { enabled = true },
+
+            zen = {
+              enabled = true,
+              toggles = { dim = true, git_signs = false },
+            },
+          })
+
+          local map = vim.keymap.set
+
+          -- Scratch
+          map("n", "<leader>.", function() Snacks.scratch() end,        { desc = "Toggle Scratch Buffer" })
+          map("n", "<leader>S", function() Snacks.scratch.select() end, { desc = "Select Scratch Buffer" })
+
+          -- Git
+          map("n", "<leader>gg", function() Snacks.lazygit() end,      { desc = "Lazygit" })
+          map("n", "<leader>gb", function() Snacks.gitbrowse() end,     { desc = "Git Browse" })
+          map("n", "<leader>gl", function() Snacks.lazygit.log() end,   { desc = "Lazygit Log" })
+
+          -- Notifications
+          map("n", "<leader>un", function() Snacks.notifier.hide() end,            { desc = "Dismiss Notifications" })
+          map("n", "<leader>sn", function() Snacks.notifier.show_history() end,    { desc = "Notification History" })
+
+          -- Zen
+          map("n", "<leader>z", function() Snacks.zen() end,      { desc = "Zen Mode" })
+          map("n", "<leader>Z", function() Snacks.zen.zoom() end, { desc = "Zoom" })
+
+          -- Explorer
+          map("n", "<leader>e",  function() Snacks.explorer() end, { desc = "Explorer (root dir)" })
+          map("n", "<leader>E",  function() Snacks.explorer({ cwd = vim.fn.expand("%:p:h") }) end, { desc = "Explorer (cwd)" })
+          map("n", "<leader>fe", function() Snacks.explorer() end, { desc = "Explorer (root dir)" })
+          map("n", "<leader>fE", function() Snacks.explorer({ cwd = vim.fn.expand("%:p:h") }) end, { desc = "Explorer (cwd)" })
+
+          -- Picker
+          map("n", "<leader><space>", function() Snacks.picker.files() end,           { desc = "Find Files" })
+          map("n", "<leader>,",       function() Snacks.picker.buffers() end,         { desc = "Switch Buffer" })
+          map("n", "<leader>/",       function() Snacks.picker.grep() end,            { desc = "Grep" })
+          map("n", "<leader>:",       function() Snacks.picker.command_history() end, { desc = "Command History" })
+          map("n", "<leader>ff",      function() Snacks.picker.files() end,           { desc = "Find Files" })
+          map("n", "<leader>fF",      function() Snacks.picker.files({ cwd = "~" }) end, { desc = "Find Files (home)" })
+          map("n", "<leader>fr",      function() Snacks.picker.recent() end,          { desc = "Recent Files" })
+          map("n", "<leader>fg",      function() Snacks.picker.git_files() end,       { desc = "Git Files" })
+          map("n", "<leader>gc",      function() Snacks.picker.git_log() end,         { desc = "Git Log" })
+          map("n", "<leader>gs",      function() Snacks.picker.git_status() end,      { desc = "Git Status" })
+          map("n", "<leader>sb",      function() Snacks.picker.lines() end,           { desc = "Buffer Lines" })
+          map("n", "<leader>sd",      function() Snacks.picker.diagnostics() end,     { desc = "Diagnostics" })
+          map("n", "<leader>sD",      function() Snacks.picker.diagnostics({ filter = { buf = 0 } }) end, { desc = "Buffer Diagnostics" })
+          map("n", "<leader>sg",      function() Snacks.picker.grep() end,            { desc = "Grep" })
+          map("n", "<leader>sh",      function() Snacks.picker.help() end,            { desc = "Help Pages" })
+          map("n", "<leader>sH",      function() Snacks.picker.highlights() end,      { desc = "Highlights" })
+          map("n", "<leader>sk",      function() Snacks.picker.keymaps() end,         { desc = "Keymaps" })
+          map("n", "<leader>sm",      function() Snacks.picker.marks() end,           { desc = "Marks" })
+          map("n", "<leader>so",      function() Snacks.picker.vim_options() end,     { desc = "Vim Options" })
+          map("n", "<leader>sw",      function() Snacks.picker.grep_word() end,       { desc = "Grep Word" })
+          map("n", "<leader>ss",      function() Snacks.picker.lsp_symbols() end,     { desc = "LSP Symbols" })
+          map("n", "<leader>sS",      function() Snacks.picker.lsp_workspace_symbols() end, { desc = "LSP Workspace Symbols" })
+          map("n", "<leader>st",      function() Snacks.picker.todo_comments() end,   { desc = "Todo" })
+          map("n", "<leader>sT",      function() Snacks.picker.todo_comments({ keywords = { "TODO", "FIX", "FIXME" } }) end, { desc = "Todo/Fix/Fixme" })
+
+          -- LSP pickers
+          map("n", "gr", function() Snacks.picker.lsp_references() end,       { desc = "LSP References" })
+          map("n", "gI", function() Snacks.picker.lsp_implementations() end,  { desc = "LSP Implementations" })
+          map("n", "gy", function() Snacks.picker.lsp_type_definitions() end, { desc = "LSP Type Definitions" })
+
+          -- Word reference jumping
+          map("n", "]]", function() Snacks.words.jump(1) end,  { desc = "Next Reference" })
+          map("n", "[[", function() Snacks.words.jump(-1) end, { desc = "Prev Reference" })
+        '';
+      }
+
       # ─── Treesitter ────────────────────────────────────────────────
       nvim-treesitter.withAllGrammars
       nvim-treesitter-textobjects
-      nvim-treesitter-context
+      # nvim-treesitter-context
 
       # ─── LSP ───────────────────────────────────────────────────────
       nvim-lspconfig
@@ -576,7 +712,7 @@ in
         plugin = vim-fugitive;
         type = "lua";
         config = ''
-          vim.keymap.set("n", "<leader>gg", "<cmd>Git<cr>", { desc = "Fugitive" })
+          vim.keymap.set("n", "<leader>gf", "<cmd>Git<cr>", { desc = "Fugitive" })
         '';
       }
 
@@ -728,20 +864,6 @@ in
             shell = vim.o.shell,
             float_opts = { border = "curved" },
           })
-
-          -- Lazygit integration
-          local Terminal = require("toggleterm.terminal").Terminal
-          local lazygit  = Terminal:new({
-            cmd = "lazygit",
-            dir = "git_dir",
-            direction = "float",
-            float_opts = { border = "none" },
-            on_open = function(term)
-              vim.cmd("startinsert!")
-              vim.api.nvim_buf_set_keymap(term.bufnr, "n", "q", "<cmd>close<CR>", { noremap = true, silent = true })
-            end,
-          })
-          vim.keymap.set("n", "<leader>gg", function() lazygit:toggle() end, { desc = "Lazygit" })
         '';
       }
 
