@@ -121,7 +121,7 @@ in
             options = {
               theme = "cyberdream",
               globalstatus = true,
-              disabled_filetypes = { statusline = { "dashboard", "alpha", "ministarter" } },
+              disabled_filetypes = { statusline = { "dashboard", "snacks_dashboard" } },
             },
             sections = {
               lualine_a = { "mode" },
@@ -155,14 +155,6 @@ in
                   .. (diag.warning and icons.warning .. diag.warning or "")
                 return vim.trim(ret)
               end,
-              offsets = {
-                {
-                  filetype = "neo-tree",
-                  text = "Neo-tree",
-                  highlight = "Directory",
-                  text_align = "left",
-                },
-              },
             },
           })
         '';
@@ -364,7 +356,6 @@ in
                 filetypes = {
                   "help", "dashboard", "snacks_dashboard", "Trouble",
                   "trouble", "notify", "toggleterm",
-                  "alpha", "neo-tree", "lazy", "mason", "lazyterm",
                 },
               },
             },
@@ -665,18 +656,7 @@ in
           })
 
           -- mini.move: move selections
-          require("mini.move").setup({
-            mappings = {
-              left        = "<M-h>",
-              right       = "<M-l>",
-              down        = "<M-j>",
-              up          = "<M-k>",
-              line_left   = "<M-h>",
-              line_right  = "<M-l>",
-              line_down   = "<M-j>",
-              line_up     = "<M-k>",
-            },
-          })
+          require("mini.move").setup()
 
           -- mini.bufremove
           require("mini.bufremove").setup()
@@ -762,7 +742,7 @@ in
             persist_size = true,
             direction = "float",
             close_on_exit = true,
-            shell = vim.o.shell,
+            shell = "fish",
             float_opts = { border = "curved" },
           })
         '';
@@ -903,7 +883,6 @@ in
         },
       })
 
-
       -- Enable all servers (binaries are on PATH via extraPackages)
       vim.lsp.enable({
         "lua_ls", "nixd", "ts_ls", "html", "cssls",
@@ -911,14 +890,11 @@ in
         "pyright", "clangd", "marksman", "texlab"
       })
 
-
-
-
       -- ─── Options ─────────────────────────────────────────────────────
       local opt = vim.opt
 
       -- Netrw
-      vim.cmd("let g:netrw_banner = 0")
+      vim.g.netrw_banner = 0
 
       -- Cursor & line numbers
       opt.guicursor      = ""
@@ -1044,9 +1020,7 @@ in
       map("n", "<leader>uL", "<cmd>set relativenumber!<cr>",      { desc = "Toggle Relative Line Numbers" })
       map("n", "<leader>ul", "<cmd>set number!<cr>",              { desc = "Toggle Line Numbers" })
       map("n", "<leader>ud", function()
-        local enabled = vim.diagnostic.is_disabled and not vim.diagnostic.is_disabled(0)
-          or (not vim.diagnostic.is_disabled and true)
-        if enabled then vim.diagnostic.disable(0) else vim.diagnostic.enable(0) end
+        vim.diagnostic.enable(not vim.diagnostic.is_enabled({ bufnr = 0 }), { bufnr = 0 })
       end, { desc = "Toggle Diagnostics" })
       map("n", "<leader>uc", function()
         vim.opt.conceallevel = vim.o.conceallevel > 0 and 0 or 2
