@@ -101,7 +101,7 @@ in
             transparent        = false,
             italic_comments    = true,
             hide_fillchars     = false,
-            borderless_telescope = true,
+            borderless_pickers = true,
             terminal_colors    = true,
             overrides = function(colors)
               return {
