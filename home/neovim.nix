@@ -101,7 +101,7 @@ in
             transparent        = false,
             italic_comments    = true,
             hide_fillchars     = false,
-            borderless_pickers = true,
+            borderless_pickers = false,
             terminal_colors    = true,
             overrides = function(colors)
               return {
@@ -310,55 +310,7 @@ in
         '';
       }
 
-      # ─── Fuzzy Finding ─────────────────────────────────────────────
-      {
-        plugin = telescope-nvim;
-        type = "lua";
-        config = ''
-          local telescope = require("telescope")
-          local actions = require("telescope.actions")
-          telescope.setup({
-            defaults = {
-              prompt_prefix = " ",
-              selection_caret = " ",
-              get_selection_window = function()
-                local wins = vim.api.nvim_list_wins()
-                table.insert(wins, 1, vim.api.nvim_get_current_win())
-                for _, win in ipairs(wins) do
-                  local buf = vim.api.nvim_win_get_buf(win)
-                  if vim.bo[buf].buftype == "" then
-                    return win
-                  end
-                end
-                return 0
-              end,
-              mappings = {
-                i = {
-                  ["<c-t>"] = function(...) return require("trouble.providers.telescope").open_with_trouble(...) end,
-                  ["<a-t>"] = function(...) return require("trouble.providers.telescope").open_selected_with_trouble(...) end,
-                  ["<a-i>"] = function()
-                    local action_state = require("telescope.actions.state")
-                    local line = action_state.get_current_line()
-                    telescope.extensions.find_files({ no_ignore = true, default_text = line })()
-                  end,
-                  ["<a-h>"] = function()
-                    local action_state = require("telescope.actions.state")
-                    local line = action_state.get_current_line()
-                    telescope.extensions.find_files({ hidden = true, default_text = line })()
-                  end,
-                  ["<C-Down>"] = actions.cycle_history_next,
-                  ["<C-Up>"] = actions.cycle_history_prev,
-                  ["<C-f>"] = actions.preview_scrolling_down,
-                  ["<C-b>"] = actions.preview_scrolling_up,
-                },
-                n = { ["q"] = actions.close },
-              },
-            },
-          })
-        '';
-      }
-
-      telescope-fzf-native-nvim
+      # ─── Snacks ─────────────────────────────────────────────
 
       {
         plugin = snacks-nvim;
@@ -381,12 +333,11 @@ in
                   "╚═╝     ╚═╝╚═╝  ╚═╝   ╚═╝      ╚═╝   ╚══════╝    ╚═╝      ╚═╝",
                 }, "\n"),
                 keys = {
-                  { icon = " ", key = "f", desc = "Find File", action = ":Telescope find_files" },
+                  { icon = " ", key = "f", desc = "Find File", action = function() Snacks.picker.files() end },
                   { icon = " ", key = "n", desc = "New File", action = ":ene | startinsert" },
-                  { icon = " ", key = "r", desc = "Recent Files", action = ":Telescope oldfiles" },
-                  { icon = " ", key = "g", desc = "Find Text", action = ":Telescope live_grep" },
-                  { icon = " ", key = "c", desc = "Config", action = ":e ~/nixos-config/home/neovim.nix" },
-                  { icon = " ", key = "C", desc = "Config (generated)", action = ":e $MYVIMRC" },
+                  { icon = " ", key = "r", desc = "Recent Files", action = function() Snacks.picker.recent() end },
+                  { icon = " ", key = "g", desc = "Find Text", action = function() Snacks.picker.grep() end },
+                  { icon = " ", key = "c", desc = "Config", action = function() Snacks.dashboard.pick('files', {cwd = "~/nixos-config/"}) end },
                   { icon = " ", key = "s", desc = "Restore Session", section = "session" },
                   { icon = " ", key = "q", desc = "Quit", action = ":qa" },
                 },
@@ -399,7 +350,7 @@ in
               style   = "compact",
             },
 
-            picker   = { enabled = false },
+            picker   = { enabled = true },
             explorer = { enabled = true },
             lazygit  = { enabled = true },
             image    = { enabled = true },
@@ -486,11 +437,6 @@ in
           map("n", "<leader>sS",      function() Snacks.picker.lsp_workspace_symbols() end, { desc = "LSP Workspace Symbols" })
           map("n", "<leader>st",      function() Snacks.picker.todo_comments() end,   { desc = "Todo" })
           map("n", "<leader>sT",      function() Snacks.picker.todo_comments({ keywords = { "TODO", "FIX", "FIXME" } }) end, { desc = "Todo/Fix/Fixme" })
-
-          -- LSP pickers
-          map("n", "gr", function() Snacks.picker.lsp_references() end,       { desc = "LSP References" })
-          map("n", "gI", function() Snacks.picker.lsp_implementations() end,  { desc = "LSP Implementations" })
-          map("n", "gy", function() Snacks.picker.lsp_type_definitions() end, { desc = "LSP Type Definitions" })
 
           -- Word reference jumping
           map("n", "]]", function() Snacks.words.jump(1) end,  { desc = "Next Reference" })
@@ -789,8 +735,6 @@ in
           vim.keymap.set("n", "[t", function() require("todo-comments").jump_prev() end, { desc = "Prev Todo Comment" })
           vim.keymap.set("n", "<leader>xt", "<cmd>TodoTrouble<cr>",               { desc = "Todo (Trouble)" })
           vim.keymap.set("n", "<leader>xT", "<cmd>TodoTrouble keywords=TODO,FIX,FIXME<cr>", { desc = "Todo/Fix/Fixme (Trouble)" })
-          vim.keymap.set("n", "<leader>st", "<cmd>TodoTelescope<cr>",             { desc = "Todo" })
-          vim.keymap.set("n", "<leader>sT", "<cmd>TodoTelescope keywords=TODO,FIX,FIXME<cr>", { desc = "Todo/Fix/Fixme" })
         '';
       }
 
@@ -909,17 +853,17 @@ in
           local map = function(mode, lhs, rhs, desc)
             vim.keymap.set(mode, lhs, rhs, { buffer = ev.buf, desc = "LSP: " .. desc })
           end
-          map("n", "gd",         vim.lsp.buf.definition,                    "Goto Definition")
-          map("n", "gD",         vim.lsp.buf.declaration,                   "Goto Declaration")
-          map("n", "gr",         "<cmd>Telescope lsp_references<cr>",       "References")
-          map("n", "gI",         "<cmd>Telescope lsp_implementations<cr>",  "Goto Implementation")
-          map("n", "gy",         "<cmd>Telescope lsp_type_definitions<cr>", "Goto T[y]pe Definition")
-          map("n", "K",          vim.lsp.buf.hover,                         "Hover")
-          map("n", "gK",         vim.lsp.buf.signature_help,                "Signature Help")
-          map("i", "<c-k>",      vim.lsp.buf.signature_help,                "Signature Help")
-          map("n", "<leader>ca", vim.lsp.buf.code_action,                   "Code Action")
-          map("v", "<leader>ca", vim.lsp.buf.code_action,                   "Code Action")
-          map("n", "<leader>cr", vim.lsp.buf.rename,                        "Rename")
+          map("n", "gd",         vim.lsp.buf.definition,                              "Goto Definition")
+          map("n", "gD",         vim.lsp.buf.declaration,                             "Goto Declaration")
+          map("n", "gr",         function() Snacks.picker.lsp_references() end,       "References")
+          map("n", "gI",         function() Snacks.picker.lsp_implementations() end,  "Goto Implementation")
+          map("n", "gy",         function() Snacks.picker.lsp_type_definitions() end, "Goto T[y]pe Definition")
+          map("n", "K",          vim.lsp.buf.hover,                                   "Hover")
+          map("n", "gK",         vim.lsp.buf.signature_help,                          "Signature Help")
+          map("i", "<c-k>",      vim.lsp.buf.signature_help,                          "Signature Help")
+          map("n", "<leader>ca", vim.lsp.buf.code_action,                             "Code Action")
+          map("v", "<leader>ca", vim.lsp.buf.code_action,                             "Code Action")
+          map("n", "<leader>cr", vim.lsp.buf.rename,                                  "Rename")
         end,
       })
 
@@ -1089,30 +1033,6 @@ in
       -- Better indenting in visual
       map("v", "<", "<gv")
       map("v", ">", ">gv")
-
-      -- Telescope
-      map("n", "<leader>,",  "<cmd>Telescope buffers sort_mru=true sort_lastused=true<cr>", { desc = "Switch Buffer" })
-      map("n", "<leader>/",  "<cmd>Telescope live_grep<cr>",         { desc = "Grep (root dir)" })
-      map("n", "<leader>:",  "<cmd>Telescope command_history<cr>",   { desc = "Command History" })
-      map("n", "<leader><space>", "<cmd>Telescope find_files<cr>",   { desc = "Find Files (root dir)" })
-      map("n", "<leader>ff", "<cmd>Telescope find_files<cr>",        { desc = "Find Files (root dir)" })
-      map("n", "<leader>fF", "<cmd>Telescope find_files cwd=~<cr>",  { desc = "Find Files (cwd)" })
-      map("n", "<leader>fr", "<cmd>Telescope oldfiles<cr>",          { desc = "Recent" })
-      map("n", "<leader>fR", "<cmd>Telescope oldfiles cwd=vim.loop.cwd()<cr>", { desc = "Recent (cwd)" })
-      map("n", "<leader>gc", "<cmd>Telescope git_commits<cr>",       { desc = "Commits" })
-      map("n", "<leader>gs", "<cmd>Telescope git_status<cr>",        { desc = "Status" })
-      map("n", "<leader>sb", "<cmd>Telescope current_buffer_fuzzy_find<cr>", { desc = "Buffer" })
-      map("n", "<leader>sd", "<cmd>Telescope diagnostics bufnr=0<cr>", { desc = "Document diagnostics" })
-      map("n", "<leader>sD", "<cmd>Telescope diagnostics<cr>",       { desc = "Workspace diagnostics" })
-      map("n", "<leader>sg", "<cmd>Telescope live_grep<cr>",         { desc = "Grep (root dir)" })
-      map("n", "<leader>sh", "<cmd>Telescope help_tags<cr>",         { desc = "Help Pages" })
-      map("n", "<leader>sH", "<cmd>Telescope highlights<cr>",        { desc = "Search Highlight Groups" })
-      map("n", "<leader>sk", "<cmd>Telescope keymaps<cr>",           { desc = "Key Maps" })
-      map("n", "<leader>sm", "<cmd>Telescope marks<cr>",             { desc = "Jump to Mark" })
-      map("n", "<leader>so", "<cmd>Telescope vim_options<cr>",       { desc = "Options" })
-      map("n", "<leader>sw", "<cmd>Telescope grep_string<cr>",       { desc = "Word (root dir)" })
-      map("n", "<leader>ss", "<cmd>Telescope lsp_document_symbols<cr>", { desc = "Goto Symbol" })
-      map("n", "<leader>sS", "<cmd>Telescope lsp_dynamic_workspace_symbols<cr>", { desc = "Goto Symbol (Workspace)" })
 
       -- UI toggles
       map("n", "<leader>uf", function()
