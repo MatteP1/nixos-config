@@ -1040,6 +1040,15 @@ in
         return vim.api.nvim_create_augroup("mattevim_" .. name, { clear = true })
       end
 
+      -- Enable treesitter highlighting for all buffers on filetype detection
+      vim.api.nvim_create_autocmd("FileType", {
+        group = augroup("treesitter"),
+        callback = function(ev)
+          local ok = pcall(vim.treesitter.start, ev.buf)
+          if not ok then return end -- no parser for this filetype, silently skip
+        end,
+      })
+
       -- Highlight on yank
       vim.api.nvim_create_autocmd("TextYankPost", {
         group = augroup("highlight_yank"),
