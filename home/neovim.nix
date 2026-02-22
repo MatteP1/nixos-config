@@ -21,6 +21,7 @@ let
     clang-tools
     marksman
     coqPackages.coq-lsp
+    texlab
   ];
 
   # Formatters/linters
@@ -49,6 +50,11 @@ let
       curl
       lazygit
       coq
+      texliveFull
+      biber
+      zathura
+      xdotool
+      pstree
     ]
     ++ lspServers
     ++ formatters;
@@ -317,35 +323,15 @@ in
         '';
       }
 
-      # ─── File Explorer ─────────────────────────────────────────────
       {
-        plugin = neo-tree-nvim;
+        plugin = vimtex;
         type = "lua";
         config = ''
-          require("neo-tree").setup({
-            filesystem = {
-              bind_to_cwd = false,
-              follow_current_file = { enabled = true },
-              use_libuv_file_watcher = true,
-            },
-            window = {
-              width = 30,
-              mappings = {
-                ["<space>"] = "none",
-              },
-            },
-            default_component_configs = {
-              indent = {
-                with_expanders = true,
-                expander_collapsed = "",
-                expander_expanded = "",
-              },
-            },
-          })
+          vim.g.vimtex_view_method = "zathura"
+          vim.g.vimtex_compiler_method = "latexmk"
+          vim.g.vimtex_mappings_prefix = "<localleader>"
         '';
       }
-
-      plenary-nvim
 
       # ─── Fuzzy Finding ─────────────────────────────────────────────
       {
@@ -960,7 +946,6 @@ in
           map("n", "<leader>ca", vim.lsp.buf.code_action,                   "Code Action")
           map("v", "<leader>ca", vim.lsp.buf.code_action,                   "Code Action")
           map("n", "<leader>cr", vim.lsp.buf.rename,                        "Rename")
-          map("n", "<leader>cf", function() vim.lsp.buf.format({ async = true }) end, "Format")
         end,
       })
 
@@ -978,11 +963,34 @@ in
         },
       })
 
+      vim.lsp.config("texlab", {
+        settings = {
+          texlab = {
+            forwardSearch = {
+              executable = "zathura",
+              args = { "--synctex-forward", "%l:1:%f", "%p" },
+            },
+            chktex = {
+              onOpenAndSave = true,
+              onEdit = true,
+            },
+            build = {
+              onSave = true,
+              executable = "latexmk",
+              args = { "-pdf", "-interaction=nonstopmode", "-synctex=1", "%f" },
+              forwardSearchAfter = true,
+            },
+            diagnosticsDelay = 300,
+          },
+        },
+      })
+
+
       -- Enable all servers (binaries are on PATH via extraPackages)
       vim.lsp.enable({
         "lua_ls", "nixd", "ts_ls", "html", "cssls",
         "jsonls", "eslint", "rust_analyzer", "gopls",
-        "pyright", "clangd", "marksman",
+        "pyright", "clangd", "marksman", "texlab"
       })
 
 
@@ -995,8 +1003,7 @@ in
       vim.cmd("let g:netrw_banner = 0")
 
       -- Cursor & line numbers
-      opt.guicursor      = ""           -- block cursor always
-      opt.nu             = true
+      opt.guicursor      = ""
       opt.number         = true
       opt.relativenumber = true
 
@@ -1047,7 +1054,7 @@ in
       opt.formatoptions  = "jcroqlnt"
 
       -- Performance
-      opt.updatetime     = 50           -- your preference (was 200)
+      opt.updatetime     = 50
       opt.timeoutlen     = 300
 
       -- Misc
@@ -1108,15 +1115,6 @@ in
       -- Better indenting in visual
       map("v", "<", "<gv")
       map("v", ">", ">gv")
-
-      -- Lazy / package management (no-op since we use nix)
-      -- Commenting out <leader>l which lazyvim uses for lazy UI
-
-      -- File explorer
-      map("n", "<leader>e",  "<cmd>Neotree toggle<cr>",         { desc = "Explorer NeoTree (root dir)" })
-      map("n", "<leader>E",  "<cmd>Neotree toggle dir=%:p:h<cr>", { desc = "Explorer NeoTree (cwd)" })
-      map("n", "<leader>fe", "<cmd>Neotree toggle<cr>",         { desc = "Explorer NeoTree (root dir)" })
-      map("n", "<leader>fE", "<cmd>Neotree toggle dir=%:p:h<cr>", { desc = "Explorer NeoTree (cwd)" })
 
       -- Telescope
       map("n", "<leader>,",  "<cmd>Telescope buffers sort_mru=true sort_lastused=true<cr>", { desc = "Switch Buffer" })
