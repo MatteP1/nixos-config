@@ -103,6 +103,11 @@ in
             hide_fillchars     = false,
             borderless_telescope = true,
             terminal_colors    = true,
+            overrides = function(colors)
+              return {
+                SnacksDashboardHeader = { fg = colors.magenta, bold = true },
+              }
+            end,
           })
           vim.cmd("colorscheme cyberdream")
         '';
@@ -216,34 +221,6 @@ in
             end,
           })
           vim.notify = require("notify")
-        '';
-      }
-
-      {
-        plugin = alpha-nvim;
-        type = "lua";
-        config = ''
-          local dashboard = require("alpha.themes.dashboard")
-          dashboard.section.header.val = {
-            "                                                                  ",
-            "  ███╗   ███╗ █████╗ ████████╗████████╗███████╗    ██████╗  ██╗  ",
-            "  ████╗ ████║██╔══██╗╚══██╔══╝╚══██╔══╝██╔════╝    ██╔══██╗███║  ",
-            "  ██╔████╔██║███████║   ██║      ██║   █████╗      ██████╔╝╚██║  ",
-            "  ██║╚██╔╝██║██╔══██║   ██║      ██║   ██╔══╝      ██╔═══╝  ██║  ",
-            "  ██║ ╚═╝ ██║██║  ██║   ██║      ██║   ███████╗    ██║      ██║  ",
-            "  ╚═╝     ╚═╝╚═╝  ╚═╝   ╚═╝      ╚═╝   ╚══════╝    ╚═╝      ╚═╝  ",
-            "                                                                  ",
-          }
-          dashboard.section.buttons.val = {
-            dashboard.button("f", " " .. " Find file",          ":Telescope find_files <CR>"),
-            dashboard.button("n", " " .. " New file",           ":ene <BAR> startinsert <CR>"),
-            dashboard.button("r", " " .. " Recent files",       ":Telescope oldfiles <CR>"),
-            dashboard.button("g", " " .. " Find text",          ":Telescope live_grep <CR>"),
-            dashboard.button("c", " " .. " Config",             ":e ~/nixos-config/home/neovim.nix <CR>"),
-            dashboard.button("C", " " .. " Config (generated)", ":e $MYVIMRC <CR>"),
-            dashboard.button("q", " " .. " Quit",               ":qa<CR>"),
-          }
-          require("alpha").setup(dashboard.opts)
         '';
       }
 
@@ -389,7 +366,7 @@ in
         config = ''
           require("snacks").setup({
             dashboard = {
-              enabled = false,
+              enabled = true,
               sections = {
                 { section = "header" },
                 { section = "keys", gap = 1, padding = 1 },
@@ -404,13 +381,14 @@ in
                   "╚═╝     ╚═╝╚═╝  ╚═╝   ╚═╝      ╚═╝   ╚══════╝    ╚═╝      ╚═╝",
                 }, "\n"),
                 keys = {
-                  { icon = " ", key = "f", desc = "Find File",          action = function() Snacks.picker.files() end },
-                  { icon = " ", key = "n", desc = "New File",           action = ":ene | startinsert" },
-                  { icon = " ", key = "r", desc = "Recent Files",       action = function() Snacks.picker.recent() end },
-                  { icon = " ", key = "g", desc = "Find Text",          action = function() Snacks.picker.grep() end },
-                  { icon = " ", key = "c", desc = "Config",             action = ":e ~/nixos-config/home/neovim.nix" },
-                  { icon = " ", key = "C", desc = "Config (generated)", action = ":e $MYVIMRC" },
-                  { icon = " ", key = "q", desc = "Quit",               action = ":qa" },
+                  { icon = " ", key = "f", desc = "Find File", action = ":Telescope find_files" },
+                  { icon = " ", key = "n", desc = "New File", action = ":ene | startinsert" },
+                  { icon = " ", key = "r", desc = "Recent Files", action = ":Telescope oldfiles" },
+                  { icon = " ", key = "g", desc = "Find Text", action = ":Telescope live_grep" },
+                  { icon = " ", key = "c", desc = "Config", action = ":e ~/nixos-config/home/neovim.nix" },
+                  { icon = " ", key = "C", desc = "Config (generated)", action = ":e $MYVIMRC" },
+                  { icon = " ", key = "s", desc = "Restore Session", section = "session" },
+                  { icon = " ", key = "q", desc = "Quit", action = ":qa" },
                 },
               },
             },
@@ -422,7 +400,7 @@ in
             },
 
             picker   = { enabled = false },
-            explorer = { enabled = false },
+            explorer = { enabled = true },
             lazygit  = { enabled = true },
             image    = { enabled = true },
 
@@ -886,10 +864,6 @@ in
         '';
       }
 
-      nvim-dap
-      nvim-dap-ui
-      nvim-dap-virtual-text
-
     ]; # end plugins
 
     initLua = ''
@@ -1169,7 +1143,7 @@ in
 
       -- ─── Autocmds ─────────────────────────────────────────────────────
       local function augroup(name)
-        return vim.api.nvim_create_augroup("lazyvim_" .. name, { clear = true })
+        return vim.api.nvim_create_augroup("mattevim_" .. name, { clear = true })
       end
 
       -- Highlight on yank
@@ -1195,8 +1169,8 @@ in
           local exclude = { "gitcommit" }
           local buf = event.buf
           if vim.tbl_contains(exclude, vim.bo[buf].filetype) then return end
-          if vim.b[buf].lazyvim_last_loc then return end
-          vim.b[buf].lazyvim_last_loc = true
+          if vim.b[buf].mattevim_last_loc then return end
+          vim.b[buf].mattevim_last_loc = true
           local mark = vim.api.nvim_buf_get_mark(buf, '"')
           local lcount = vim.api.nvim_buf_line_count(buf)
           if mark[1] > 0 and mark[1] <= lcount then
