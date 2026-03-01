@@ -18,6 +18,11 @@
       editor = "nvim";
     };
 
+    extraConfig = ''
+      include dank-tabs.conf
+      include dank-theme.conf
+    '';
+
     keybindings = {
       "kitty_mod+0" = "change_font_size all 0";
       "kitty_mod+=" = "change_font_size all +1";
