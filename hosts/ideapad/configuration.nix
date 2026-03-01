@@ -8,6 +8,7 @@
   imports = [
     ./hardware-configuration.nix
     ../../modules/common.nix
+    ../../modules/immich.nix
   ];
 
   networking.hostName = "ideapad";
