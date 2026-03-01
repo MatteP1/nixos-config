@@ -16,12 +16,12 @@
     ./opam.nix
     ./hyprland.nix
     ./vscode.nix
+    ./yazi.nix
   ];
 
   home.packages = with pkgs; [
     prismlauncher
     spotify
-    nautilus
     xeyes
     mattermost-desktop
     slack
@@ -30,5 +30,9 @@
   ];
 
   programs.fish.enable = true;
+
+  home.sessionVariables = {
+    EDITOR = "nvim";
+  };
 
 }
