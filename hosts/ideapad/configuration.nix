@@ -13,4 +13,9 @@
 
   networking.hostName = "ideapad";
 
+  # Ensure laptop keeps running when lid is closed and connected to power
+  services.logind.settings.Login = {
+    HandleLidSwitchExternalPower = "ignore";
+  };
+
 }
