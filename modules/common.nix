@@ -164,7 +164,7 @@
     git
     fish
     kitty
-    neofetch
+    fastfetch
     sddm-astronaut
     gnumake
     gcc
