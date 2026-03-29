@@ -12,6 +12,37 @@
 
   networking.hostName = "desktop";
 
+  fileSystems = {
+    "/mnt/photos" = {
+      device = "/dev/disk/by-label/photos";
+      fsType = "ext4";
+      options = [
+        "defaults"
+        "nofail"
+      ];
+    };
+  };
+
+  environment.shellAliases = {
+    backup-immich = "sudo rsync --progress -avz root@ideapad:/var/lib/immich /mnt/photos/";
+  };
+
+  # systemd.services.immich-backup = {
+  #   description = "Backup Immich data from Ideapad";
+  #   serviceConfig = {
+  #     Type = "oneshot";
+  #     ExecStart = "/run/current-system/sw/bin/rsync -avz root@ideapad:/var/lib/immich /mnt/photos/";
+  #   };
+  # };
+  #
+  # systemd.timers.immich-backup = {
+  #   wantedBy = [ "timers.target" ];
+  #   timerConfig = {
+  #     OnCalendar = "weekly";
+  #     Persistent = true;
+  #   };
+  # };
+
   # Enable OpenGL
   hardware.graphics = {
     enable = true;
