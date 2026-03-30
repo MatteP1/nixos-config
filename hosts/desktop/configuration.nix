@@ -24,7 +24,12 @@
   };
 
   environment.shellAliases = {
-    backup-immich = "sudo rsync --progress -avz root@ideapad:/var/lib/immich /mnt/photos/";
+    backup-immich = ''
+      sudo rsync -avz --progress root@ideapad:/var/lib/immich/profile /mnt/photos/immich/ &&
+      sudo rsync -avz --progress root@ideapad:/var/lib/immich/library /mnt/photos/immich/ &&
+      sudo rsync -avz --progress root@ideapad:/var/lib/immich/upload /mnt/photos/immich/ &&
+      sudo rsync -avz --progress --delete root@ideapad:/var/lib/immich/backups/ /mnt/photos/immich/backups/
+    '';
   };
 
   # systemd.services.immich-backup = {
