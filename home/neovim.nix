@@ -13,8 +13,8 @@ let
   lspServers = with pkgs; [
     lua-language-server
     nixd
-    nodePackages.typescript-language-server
-    nodePackages.vscode-langservers-extracted # html/css/json/eslint
+    typescript-language-server
+    vscode-langservers-extracted # html/css/json/eslint
     rust-analyzer
     gopls
     pyright
