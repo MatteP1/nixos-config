@@ -9,6 +9,7 @@
     ./hardware-configuration.nix
     ../../modules/common.nix
     ../../modules/immich.nix
+    ../../modules/home-assistant.nix
   ];
 
   networking.hostName = "ideapad";
