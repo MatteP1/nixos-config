@@ -33,7 +33,7 @@
             EnumerateSkipFirst = false;
           };
           "Hotkey/TriggerKeys" = {
-            "0" = "Super+space";
+            "0" = "Control+space";
           };
           "Hotkey/AltTriggerKeys" = {
             "0" = "Shift_L";
@@ -51,10 +51,10 @@
             "0" = "Down";
           };
           "Hotkey/EnumerateGroupForwardKeys" = {
-            "0" = "Super+space";
+            "0" = "Control+space";
           };
           "Hotkey/EnumerateGroupBackwardKeys" = {
-            "0" = "Shift+Super+space";
+            "0" = "Shift+Control+space";
           };
           Behavior = {
             PreeditEnabledByDefault = true;
