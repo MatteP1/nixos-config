@@ -333,4 +333,8 @@ binds {
   Mod+Shift+J     { move-window-down-or-to-workspace-down; }
   Mod+Shift+K     { move-window-up-or-to-workspace-up; }
   Mod+Shift+L     { move-column-right-or-to-monitor-right; }
+
+  Mod+Escape hotkey-overlay-title="Lock Screen" {
+    spawn "dms" "ipc" "call" "lock" "lock";
+  }
 }
