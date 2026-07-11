@@ -13,7 +13,7 @@
     ./fcitx5.nix
     ./ssh.nix
     ./git.nix
-    ./opam.nix
+    # ./opam.nix
     # ./hyprland.nix
     ./niri.nix
     ./vscode.nix

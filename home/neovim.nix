@@ -20,7 +20,6 @@ let
     pyright
     clang-tools
     marksman
-    coqPackages.coq-lsp
     texlab
   ];
 
@@ -49,7 +48,6 @@ let
       gnumake
       curl
       lazygit
-      coq
       texliveFull
       biber
       zathura
@@ -89,6 +87,8 @@ in
 
     extraConfig = ''
       let g:python3_host_prog = '${python3Env}/bin/python3'
+      let g:loaded_coqtail = 1
+      let g:coqtail#supported = 0
     '';
 
     plugins = with p; [
@@ -226,8 +226,6 @@ in
         '';
       }
 
-      Coqtail
-
       # ─── latex-unicoder ────────────────────────────────────────────
       {
         plugin = latex-unicoder;
@@ -289,6 +287,34 @@ in
             ["_v"]        = "ᵥ",
             ["_x"]        = "ₓ",
           }
+        '';
+      }
+
+      # ─── Rocq / coq-lsp ───────────────────────────────────────────
+      Coqtail
+
+      {
+        plugin = coq-lsp-nvim;
+        type = "lua";
+        config = ''
+          require("coq-lsp").setup({
+            coq_lsp_nvim = {
+              info_panel_mode = "tab",
+              info_panel_sticky_close = true,
+            },
+            lsp = {
+              on_attach = function(client, bufnr)
+                local map = function(lhs, rhs, desc)
+                  vim.keymap.set("n", lhs, rhs, { buffer = bufnr, desc = desc })
+                end
+                map("<leader>ri", "<cmd>CoqLsp open_info_panel<cr>", "Rocq: open info panel")
+                map("<leader>rv", "<cmd>CoqLsp saveVo<cr>",          "Rocq: save .vo")
+              end,
+              -- init_options = {
+              --   show_notices_as_diagnostics = true,
+              -- },
+            },
+          })
         '';
       }
 
