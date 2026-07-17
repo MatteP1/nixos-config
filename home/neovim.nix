@@ -50,9 +50,11 @@ let
       lazygit
       texliveFull
       biber
+      pstree
+    ]
+    ++ lib.optionals pkgs.stdenv.isLinux [
       zathura
       xdotool
-      pstree
     ]
     ++ lspServers
     ++ formatters;
@@ -322,7 +324,7 @@ in
         plugin = vimtex;
         type = "lua";
         config = ''
-          vim.g.vimtex_view_method = "zathura"
+          ${lib.optionalString pkgs.stdenv.isLinux ''vim.g.vimtex_view_method = "zathura"''}
           vim.g.vimtex_compiler_method = "latexmk"
           vim.g.vimtex_mappings_prefix = "<localleader>"
         '';
@@ -890,10 +892,12 @@ in
       vim.lsp.config("texlab", {
         settings = {
           texlab = {
-            forwardSearch = {
-              executable = "zathura",
-              args = { "--synctex-forward", "%l:1:%f", "%p" },
-            },
+            ${lib.optionalString pkgs.stdenv.isLinux ''
+              forwardSearch = {
+                executable = "zathura",
+                args = { "--synctex-forward", "%l:1:%f", "%p" },
+              },
+            ''}
             chktex = {
               onOpenAndSave = true,
               onEdit = true,
@@ -902,7 +906,7 @@ in
               onSave = true,
               executable = "latexmk",
               args = { "-pdf", "-interaction=nonstopmode", "-synctex=1", "%f" },
-              forwardSearchAfter = true,
+              forwardSearchAfter = ${if pkgs.stdenv.isLinux then "true" else "false"},
             },
             diagnosticsDelay = 300,
           },

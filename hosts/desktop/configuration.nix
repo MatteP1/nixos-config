@@ -7,7 +7,7 @@
 {
   imports = [
     ./hardware-configuration.nix
-    ../../modules/common.nix
+    ../../modules/nixos/common.nix
   ];
 
   networking.hostName = "desktop";

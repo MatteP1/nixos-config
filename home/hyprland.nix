@@ -3,9 +3,6 @@
   imports = [
     # ./hypridle.nix
     ./fuzzel.nix
-    # ./swaync
-    # ./waybar
-    # ./hyprpaper.nix
   ];
 
   home.packages = with pkgs; [

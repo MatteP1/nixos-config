@@ -1,4 +1,4 @@
-{ pkgs, ... }:
+{ pkgs, config, ... }:
 {
   programs.kitty = {
     enable = true;
@@ -14,8 +14,8 @@
       font_family = "FiraCode Nerd Font";
       font_size = "11";
       background_opacity = "0.7";
-      shell = "fish";
-      editor = "nvim";
+      shell = "${pkgs.fish}/bin/fish";
+      editor = "${config.programs.neovim.finalPackage}/bin/nvim";
     };
 
     extraConfig = ''

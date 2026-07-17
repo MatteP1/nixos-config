@@ -1,5 +1,5 @@
-{ pkgs, config, ... }:
-{
+{ pkgs, config, lib, ... }:
+lib.mkIf pkgs.stdenv.isLinux {
   home.packages = with pkgs; [
     xdg-utils
     xdg-desktop-portal-gtk
@@ -42,6 +42,6 @@
   };
 
   home.file.".config/niri/config.kdl".source =
-    config.lib.file.mkOutOfStoreSymlink "/home/matte/nixos-config/home/niri/config.kdl";
+    config.lib.file.mkOutOfStoreSymlink "${config.home.homeDirectory}/nixos-config/home/niri/config.kdl";
 
 }

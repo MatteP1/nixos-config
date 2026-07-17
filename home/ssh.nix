@@ -1,10 +1,10 @@
-{ ... }:
+{ pkgs, ... }:
 
 {
   programs.ssh = {
     enable = true;
     enableDefaultConfig = false;
-    matchBlocks."*" = {
+    settings."*" = {
       forwardAgent = false;
       addKeysToAgent = "yes";
       compression = false;
@@ -17,5 +17,7 @@
       controlPersist = "no";
     };
   };
-  services.ssh-agent.enable = true;
+
+  # systemd user service - macOS already runs its own launchd ssh-agent.
+  services.ssh-agent.enable = pkgs.stdenv.isLinux;
 }

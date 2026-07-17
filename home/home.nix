@@ -1,8 +1,14 @@
-{ config, pkgs, ... }:
+{
+  config,
+  pkgs,
+  lib,
+  user,
+  ...
+}:
 
 {
-  home.username = "matte";
-  home.homeDirectory = "/home/matte";
+  home.username = user;
+  home.homeDirectory = if pkgs.stdenv.isDarwin then "/Users/${user}" else "/home/${user}";
   home.stateVersion = "26.05";
   programs.home-manager.enable = true;
 
@@ -10,7 +16,6 @@
     ./kitty.nix
     ./starship.nix
     ./neovim.nix
-    ./fcitx5.nix
     ./ssh.nix
     ./git.nix
     # ./opam.nix
@@ -18,17 +23,25 @@
     ./niri.nix
     ./vscode.nix
     ./yazi.nix
+    ./fcitx5.nix
+    # ./hyprland.nix
+    ./niri.nix
+    ./darwin.nix
+    ./rocq.nix
   ];
 
-  home.packages = with pkgs; [
-    prismlauncher
-    spotify
-    xeyes
-    mattermost-desktop
-    slack
-    snitch
-    osu-lazer-bin
-  ];
+  home.packages = lib.optionals pkgs.stdenv.isLinux (
+    with pkgs;
+    [
+      prismlauncher
+      spotify
+      xeyes
+      mattermost-desktop
+      slack
+      snitch
+      osu-lazer-bin
+    ]
+  );
 
   programs.fish.enable = true;
 

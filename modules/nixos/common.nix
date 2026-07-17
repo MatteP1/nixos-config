@@ -2,10 +2,16 @@
 # your system.  Help is available in the configuration.nix(5) man page
 # and in the NixOS manual (accessible by running ‘nixos-help’).
 
-{ config, pkgs, ... }:
+{
+  config,
+  pkgs,
+  user,
+  ...
+}:
 
 {
   imports = [
+    ../shared
     ./sddm.nix
     ./flatpak.nix
     ./openTableDriver.nix
@@ -27,9 +33,6 @@
 
   # Enable networking
   networking.networkmanager.enable = true;
-
-  # Set your time zone.
-  time.timeZone = "Europe/Copenhagen";
 
   # Select internationalisation properties.
   i18n.defaultLocale = "en_US.UTF-8";
@@ -58,15 +61,6 @@
   # Required services
   services.upower.enable = true;
   services.geoclue2.enable = true; # For QtPositioning
-
-  fonts.packages = with pkgs; [
-    noto-fonts
-    noto-fonts-cjk-sans
-    rubik
-    nerd-fonts.ubuntu
-    nerd-fonts.jetbrains-mono
-    nerd-fonts.fira-code
-  ];
 
   # Configure keymap in X11
   services.xserver.xkb = {
@@ -123,10 +117,8 @@
   # Enable touchpad support (enabled default in most desktopManager).
   # services.xserver.libinput.enable = true;
 
-  services.tailscale.enable = true;
-
   # Define a user account. Don't forget to set a password with ‘passwd’.
-  users.users.matte = {
+  users.users.${user} = {
     isNormalUser = true;
     description = "Mathias Pedersen";
     extraGroups = [
@@ -143,7 +135,7 @@
     enable = true;
     clean.enable = true;
     clean.extraArgs = "--keep-since 10d --keep 5";
-    flake = "${config.users.users.matte.home}/nixos-config";
+    flake = "${config.users.users.${user}.home}/nixos-config";
   };
 
   # Install firefox.
@@ -152,29 +144,9 @@
   # Install steam
   programs.steam.enable = true;
 
-  # Allow unfree packages
-  nixpkgs.config.allowUnfree = true;
-
-  # List packages installed in system profile. To search, run:
-  # $ nix search wget
   environment.systemPackages = with pkgs; [
-    #  vim # Do not forget to add an editor to edit configuration.nix! The Nano editor is also installed by default.
-    wget
-    vim
-    git
-    fish
     kitty
-    fastfetch
     sddm-astronaut
-    gnumake
-    gcc
-    clang
-    gmp
-    pkg-config
-    ripgrep
-    lazygit
-    fzf
-    fd
 
     nwg-displays
     networkmanagerapplet

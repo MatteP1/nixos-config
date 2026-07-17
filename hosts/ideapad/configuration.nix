@@ -7,9 +7,9 @@
 {
   imports = [
     ./hardware-configuration.nix
-    ../../modules/common.nix
-    ../../modules/immich.nix
-    ../../modules/home-assistant.nix
+    ../../modules/nixos/common.nix
+    ../../modules/nixos/immich.nix
+    ../../modules/nixos/home-assistant.nix
   ];
 
   networking.hostName = "ideapad";
