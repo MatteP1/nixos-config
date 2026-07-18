@@ -6,6 +6,7 @@ lib.mkIf pkgs.stdenv.isLinux {
     adwaita-icon-theme
     brightnessctl
     waypaper
+    xwayland-satellite
   ];
 
   home.pointerCursor = {
