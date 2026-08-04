@@ -1,4 +1,9 @@
-{ pkgs, config, lib, ... }:
+{
+  pkgs,
+  config,
+  lib,
+  ...
+}:
 lib.mkIf pkgs.stdenv.isLinux {
   home.packages = with pkgs; [
     xdg-utils
@@ -19,11 +24,6 @@ lib.mkIf pkgs.stdenv.isLinux {
 
   gtk = {
     enable = true;
-
-    theme = {
-      package = pkgs.flat-remix-gtk;
-      name = "Flat-Remix-GTK-Grey-Darkest";
-    };
 
     iconTheme = {
       package = pkgs.adwaita-icon-theme;

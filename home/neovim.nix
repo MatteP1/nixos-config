@@ -21,6 +21,7 @@ let
     clang-tools
     marksman
     texlab
+    jdt-language-server
   ];
 
   # Formatters/linters
@@ -49,6 +50,7 @@ let
       curl
       lazygit
       texliveFull
+      typst
       biber
       pstree
     ]
@@ -320,6 +322,8 @@ in
         '';
       }
 
+      # ─── Documents ─────────────────────────────────────────────
+
       {
         plugin = vimtex;
         type = "lua";
@@ -329,6 +333,8 @@ in
           vim.g.vimtex_mappings_prefix = "<localleader>"
         '';
       }
+
+      typst-preview-nvim
 
       # ─── Snacks ─────────────────────────────────────────────
 
@@ -470,6 +476,22 @@ in
 
       # ─── LSP ───────────────────────────────────────────────────────
       nvim-lspconfig
+
+      {
+        plugin = nvim-jdtls;
+        type = "lua";
+        config = ''
+          vim.api.nvim_create_autocmd("FileType", {
+            pattern = "java",
+            callback = function()
+              require("jdtls").start_or_attach({
+                cmd = { "jdtls", "-data", vim.fn.stdpath("data") .. "/jdtls-workspace/" .. vim.fn.fnamemodify(vim.fn.getcwd(), ":p:h:t") },
+                root_dir = require("jdtls.setup").find_root({ ".git", "mvnw", "gradlew", "pom.xml", "build.gradle" }),
+              })
+            end,
+          })
+        '';
+      }
 
       # ─── Completion ────────────────────────────────────────────────
       {
