@@ -1,6 +1,8 @@
 { pkgs, ... }:
 
 {
+  home.packages = [ pkgs.libsecret ];
+
   programs.git = {
     enable = true;
     signing = {
@@ -9,6 +11,8 @@
       # Note: the signing key must be created manually. E.g. using `ssh-keygen`.
       signByDefault = true;
     };
+
+    package = pkgs.gitFull;
     settings = {
       user = {
         name = "MatteP1";
@@ -16,6 +20,7 @@
       };
 
       init.defaultBranch = "main";
+      credential.helper = "libsecret";
 
       # url = {
       # 	"git@github.com:".insteadOf = "https://github.com/";
