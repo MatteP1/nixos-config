@@ -138,9 +138,6 @@
     flake = "${config.users.users.${user}.home}/nixos-config";
   };
 
-  # Install firefox.
-  programs.firefox.enable = true;
-
   # Install steam
   programs.steam.enable = true;
 

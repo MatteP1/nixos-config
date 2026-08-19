@@ -28,6 +28,7 @@
     ./niri.nix
     ./darwin.nix
     ./rocq.nix
+    ./firefox.nix
   ];
 
   home.packages = lib.optionals pkgs.stdenv.isLinux (
