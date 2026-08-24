@@ -12,7 +12,7 @@
       BackgroundAppUpdate = false;
 
       # Feature Disabling
-      DisableBuiltinPDFViewer = true;
+      # DisableBuiltinPDFViewer = true;
       DisableFirefoxStudies = true;
       DisableFirefoxAccounts = true;
       DisableFirefoxScreenshots = true;
