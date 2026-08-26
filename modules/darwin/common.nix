@@ -33,6 +33,11 @@
     enable = true;
     username = user;
     entries = [
+      {
+        path = "${
+          config.home-manager.users.${user}.programs.firefox.finalPackage
+        }/Applications/Firefox.app/";
+      }
       { path = "${pkgs.kitty}/Applications/kitty.app/"; }
       { path = "/Applications/Slack.app/"; }
       { path = "/Applications/Mattermost.app/"; }
@@ -88,6 +93,7 @@
   homebrew = {
     enable = true;
     casks = [
+      "bitwarden"
       "spotify"
       "slack"
       "mattermost"
