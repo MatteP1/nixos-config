@@ -36,6 +36,7 @@
       DontCheckDefaultBrowser = true;
       HardwareAcceleration = false;
       OfferToSaveLogins = false;
+      AutoScroll = true;
       # DefaultDownloadDirectory = "${home}/Downloads";
 
       # Extensions
@@ -87,6 +88,7 @@
       settings = {
         "sidebar.revamp" = true;
         "sidebar.verticalTabs" = true;
+        "general.autoScroll" = true;
       };
       search = {
         force = true;
