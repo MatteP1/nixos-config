@@ -97,6 +97,7 @@
       "spotify"
       "slack"
       "mattermost"
+      "steam"
       "prismlauncher"
       "osu"
       "mos"
