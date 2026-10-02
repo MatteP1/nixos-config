@@ -91,8 +91,6 @@ in
 
     extraConfig = ''
       let g:python3_host_prog = '${python3Env}/bin/python3'
-      let g:loaded_coqtail = 1
-      let g:coqtail#supported = 0
     '';
 
     plugins = with p; [
