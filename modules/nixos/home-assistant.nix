@@ -6,6 +6,7 @@
     extraComponents = [
       "analytics"
       "google_translate"
+      "matter"
       "met"
       "radio_browser"
       "shopping_list"
