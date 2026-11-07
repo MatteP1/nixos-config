@@ -19,5 +19,5 @@
   };
 
   # systemd user service - macOS already runs its own launchd ssh-agent.
-  services.ssh-agent.enable = pkgs.stdenv.isLinux;
+  services.ssh-agent.enable = pkgs.stdenv.hostPlatform.isLinux;
 }

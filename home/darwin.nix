@@ -10,7 +10,7 @@
     inputs.mac-app-util.homeManagerModules.default
   ];
 
-  config = lib.mkIf pkgs.stdenv.isDarwin {
+  config = lib.mkIf pkgs.stdenv.hostPlatform.isDarwin {
     # Set Colemak as the keyboard layout.
     home.activation.enableColemakInputSource = lib.hm.dag.entryAfter [ "writeBoundary" ] ''
       if ! /usr/bin/defaults read com.apple.HIToolbox AppleEnabledInputSources 2>/dev/null | grep -q '"KeyboardLayout Name" = Colemak;'; then

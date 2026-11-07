@@ -1,8 +1,8 @@
 { pkgs, config, ... }:
 {
   imports = [
-    # ./hypridle.nix
-    ./fuzzel.nix
+    # ../hypridle.nix
+    ../fuzzel.nix
   ];
 
   home.packages = with pkgs; [

@@ -4,7 +4,7 @@
   lib,
   ...
 }:
-lib.mkIf pkgs.stdenv.isLinux {
+lib.mkIf pkgs.stdenv.hostPlatform.isLinux {
   home.packages = with pkgs; [
     xdg-utils
     xdg-desktop-portal-gtk

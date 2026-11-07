@@ -1,5 +1,4 @@
 {
-  config,
   pkgs,
   lib,
   user,
@@ -8,7 +7,7 @@
 
 {
   home.username = user;
-  home.homeDirectory = if pkgs.stdenv.isDarwin then "/Users/${user}" else "/home/${user}";
+  home.homeDirectory = if pkgs.stdenv.hostPlatform.isDarwin then "/Users/${user}" else "/home/${user}";
   home.stateVersion = "26.05";
   programs.home-manager.enable = true;
 
@@ -18,20 +17,17 @@
     ./neovim.nix
     ./ssh.nix
     ./git.nix
-    # ./opam.nix
-    # ./hyprland.nix
-    ./niri.nix
-    ./vscode.nix
+    ./niri
+    # ./hypr
     ./yazi.nix
     ./fcitx5.nix
-    # ./hyprland.nix
-    ./niri.nix
     ./darwin.nix
+    ./vscode.nix
     ./rocq.nix
     ./firefox.nix
   ];
 
-  home.packages = lib.optionals pkgs.stdenv.isLinux (
+  home.packages = lib.optionals pkgs.stdenv.hostPlatform.isLinux (
     with pkgs;
     [
       prismlauncher

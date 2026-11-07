@@ -1,7 +1,7 @@
 { config, pkgs, ... }:
 {
   imports = [
-    ./dms.nix
+    ./dux.nix
   ];
   # Enable Hyprland
   programs.hyprland = {

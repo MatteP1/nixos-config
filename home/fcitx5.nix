@@ -1,5 +1,5 @@
 { pkgs, lib, ... }:
-lib.mkIf pkgs.stdenv.isLinux {
+lib.mkIf pkgs.stdenv.hostPlatform.isLinux {
   i18n.inputMethod = {
     type = "fcitx5";
     enable = true;

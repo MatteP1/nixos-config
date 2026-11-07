@@ -66,9 +66,6 @@ input {
         numlock
     }
 
-    // Next sections include libinput settings.
-    // Omitting settings disables them, or leaves them at their default values.
-    // All commented-out settings here are examples, not defaults.
     touchpad {
         // off
         tap
@@ -109,6 +106,7 @@ input {
     // Setting max-scroll-amount="0%" makes it work only on windows already fully on screen.
     focus-follows-mouse max-scroll-amount="0%"
 }
+
 // You can configure outputs by their name, which you can find
 // by running `niri msg outputs` while inside a niri instance.
 // The built-in laptop monitor is usually called "eDP-1".
@@ -130,9 +128,6 @@ layout {
     //   together with the previously focused column.
     center-focused-column "never"
     always-center-single-column
-
-    // default-column-display "tabbed"
-
 
     // You can customize the widths that "switch-preset-column-width" (Mod+R) toggles between.
     preset-column-widths {
@@ -283,12 +278,6 @@ window-rule {
     match app-id="zoom"
     open-floating true
 }
-// Open dms windows as floating by default
-window-rule {
-    match app-id=r#"org.quickshell$"#
-    match app-id=r#"com.danklinux.dms$"#
-    open-floating true
-}
 debug {
     honor-xdg-activation-with-invalid-serial
 }
@@ -304,12 +293,13 @@ recent-windows {
 }
 
 // Include dms files
-include "dms/colors.kdl"
-include "dms/layout.kdl"
-include "dms/alttab.kdl"
-include "dms/binds.kdl"
-include "dms/outputs.kdl"
-include "dms/cursor.kdl"
+include optional=true "dms/colors.kdl"
+include optional=true "dms/layout.kdl"
+include optional=true "dms/alttab.kdl"
+include optional=true "dms/binds.kdl"
+include optional=true "dms/outputs.kdl"
+include optional=true "dms/cursor.kdl"
+include optional=true "dms/input.kdl"
 
 binds {
   Mod+Slash { 

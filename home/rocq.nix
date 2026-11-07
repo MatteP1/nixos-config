@@ -13,7 +13,7 @@ in
     with pkgs;
     [
       rocq-core
-      coqPackages.coq-lsp
+      rocqPackages.coq-lsp
     ]
     ++ rocqLibs;
 

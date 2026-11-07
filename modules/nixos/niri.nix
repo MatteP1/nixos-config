@@ -2,7 +2,7 @@
 
 {
   imports = [
-    ./dms.nix
+    ./dux.nix
   ];
 
   fonts.packages = with pkgs; [
