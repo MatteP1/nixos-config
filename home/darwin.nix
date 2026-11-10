@@ -29,6 +29,7 @@
         $DRY_RUN_CMD /usr/bin/defaults write com.apple.HIToolbox AppleEnabledInputSources -array-add \
           '<dict><key>Bundle ID</key><string>com.apple.inputmethod.Kotoeri.RomajiTyping</string><key>InputSourceKind</key><string>Keyboard Input Method</string></dict>'
       fi
+      $DRY_RUN_CMD /usr/bin/defaults write com.apple.inputmethod.Kotoeri JIMPrefRomajiKeyboardLayoutKey -string "com.apple.keylayout.Colemak"
     '';
   };
 }
