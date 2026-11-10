@@ -2,6 +2,8 @@
 {
   programs.kitty = {
     enable = true;
+    # Comes from the Homebrew cask on Darwin instead (modules/darwin/common.nix).
+    package = if pkgs.stdenv.hostPlatform.isDarwin then null else pkgs.kitty;
     # themeFile = "Catppuccin-Mocha";
     shellIntegration.enableFishIntegration = true;
     settings = {

@@ -1,10 +1,13 @@
-{ pkgs, ... }:
+{ pkgs, lib, ... }:
 
 {
   programs.firefox = {
     enable = true;
 
-    languagePacks = [ "en-US" ];
+    # TODO: Installing firefox through homebrew due to bug when installing through nixpkgs.
+    package = if pkgs.stdenv.hostPlatform.isDarwin then null else pkgs.firefox;
+    release = lib.mkIf pkgs.stdenv.hostPlatform.isDarwin "159.0";
+    languagePacks = if pkgs.stdenv.hostPlatform.isDarwin then [ ] else [ "en-US" ];
 
     policies = {
       # Updates & Background Services

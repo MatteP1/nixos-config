@@ -1,15 +1,10 @@
 {
-  inputs,
   lib,
   pkgs,
   ...
 }:
 
 {
-  imports = [
-    inputs.mac-app-util.homeManagerModules.default
-  ];
-
   config = lib.mkIf pkgs.stdenv.hostPlatform.isDarwin {
     # Set Colemak as the keyboard layout.
     home.activation.enableColemakInputSource = lib.hm.dag.entryAfter [ "writeBoundary" ] ''

@@ -11,7 +11,6 @@
     ../shared
     ./dock.nix
     inputs.nix-homebrew.darwinModules.nix-homebrew
-    inputs.mac-app-util.darwinModules.default
   ];
 
   nix.enable = false;
@@ -33,12 +32,8 @@
     enable = true;
     username = user;
     entries = [
-      {
-        path = "${
-          config.home-manager.users.${user}.programs.firefox.finalPackage
-        }/Applications/Firefox.app/";
-      }
-      { path = "${pkgs.kitty}/Applications/kitty.app/"; }
+      { path = "/Applications/Firefox.app/"; }
+      { path = "/Applications/kitty.app/"; }
       { path = "/Applications/Slack.app/"; }
       { path = "/Applications/Mattermost.app/"; }
       { path = "/Applications/Spotify.app/"; }
@@ -101,6 +96,9 @@
       "prismlauncher"
       "osu"
       "mos"
+      "firefox"
+      "visual-studio-code"
+      "kitty"
     ];
     onActivation = {
       autoUpdate = true;
