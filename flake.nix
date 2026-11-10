@@ -2,7 +2,7 @@
   description = "Matte's Nix config";
 
   inputs = {
-    nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
+    nixpkgs.url = "github:NixOS/nixpkgs/nixpkgs-unstable";
 
     home-manager = {
       url = "github:nix-community/home-manager";
@@ -16,7 +16,10 @@
 
     nix-homebrew.url = "github:zhaofengli/nix-homebrew";
 
-    mac-app-util.url = "github:hraban/mac-app-util";
+    mac-app-util = {
+      url = "github:hraban/mac-app-util";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
 
   outputs =
@@ -69,6 +72,18 @@
 
           modules = [
             ./hosts/${hostname}/configuration.nix
+
+            # TODO: temporary fix to stop nix building dotnet.
+            {
+              nixpkgs.overlays = [
+                (final: prev: {
+                  dotnetCorePackages = prev.dotnetCorePackages // {
+                    runtime_9_0 = prev.dotnetCorePackages.runtime_9_0-bin;
+                    sdk_9_0 = prev.dotnetCorePackages.sdk_9_0-bin;
+                  };
+                })
+              ];
+            }
 
             home-manager.darwinModules.home-manager
             {
