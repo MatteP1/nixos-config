@@ -7,7 +7,8 @@
 
 {
   home.username = user;
-  home.homeDirectory = if pkgs.stdenv.hostPlatform.isDarwin then "/Users/${user}" else "/home/${user}";
+  home.homeDirectory =
+    if pkgs.stdenv.hostPlatform.isDarwin then "/Users/${user}" else "/home/${user}";
   home.stateVersion = "26.05";
   programs.home-manager.enable = true;
 
@@ -23,7 +24,7 @@
     ./fcitx5.nix
     ./darwin.nix
     ./vscode.nix
-    ./rocq.nix
+    # ./rocq.nix
     ./firefox.nix
   ];
 
